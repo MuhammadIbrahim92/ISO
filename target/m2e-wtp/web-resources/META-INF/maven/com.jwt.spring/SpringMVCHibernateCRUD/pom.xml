@@ -87,9 +87,9 @@
 </dependency>
  
 <dependency>
-    <groupId>com.sun.mail</groupId>
-    <artifactId>javax.mail</artifactId>
-    <version>1.16.18</version>
+  <groupId>com.sun.mail</groupId>
+  <artifactId>javax.mail</artifactId>
+  <version>1.6.2</version>
 </dependency>
         <!-- Hibernate 4 dependencies -->
         <dependency>
@@ -115,12 +115,11 @@
 			<artifactId>postgresql</artifactId>
 			<version>42.2.2</version>
 		</dependency>
-        
         <dependency>
-<groupId>com.oracle</groupId>
-<artifactId>ojdbc6</artifactId>
-<version>11.2.0.3</version>
-</dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-jasper</artifactId>
+        <version>8.5.15</version>
+    </dependency>
          
         <!-- Servlet and JSP -->
         <dependency>
