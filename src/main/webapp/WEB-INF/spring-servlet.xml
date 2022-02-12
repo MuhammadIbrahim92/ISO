@@ -25,7 +25,7 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 <bean class="java.net.URI" id="dbUrl">
-    <constructor-arg value="#{systemEnvironment['SPRING_DATASOURCE_URL']}"/>
+    <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
 </bean>
 	<!-- DataSource -->
 	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
