@@ -6,7 +6,7 @@
  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Demo dashboard</title>
+    <title>QM Connect (ISO-9000) dashboard</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
@@ -40,7 +40,7 @@
                   <div class="logo">
                     <h1>Dashboard</h1>
                   </div>
-                  <p>Test Dashboard Login</p>
+                  <p>QM Connect Login</p>
                 </div>
               </div>
             </div>
