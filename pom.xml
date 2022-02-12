@@ -87,10 +87,10 @@
 </dependency>
  
 <dependency>
-    <groupId>com.sun.mail</groupId>
-    <artifactId>javax.mail</artifactId>
-    <version>1.16.18</version>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
 </dependency>
+
         <!-- Hibernate 4 dependencies -->
         <dependency>
             <groupId>org.hibernate</groupId>
