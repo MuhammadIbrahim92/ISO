@@ -290,7 +290,7 @@ nav.side-navbar.shrinked .sidebar-header .title {
           <span class="heading">Main</span>
            <ul class="list-unstyled">
                     <li id="Dashboardli"><a href="Dashboard"> <i class="fa fa-area-chart"></i>Dashboard</a></li>
-                     <sec:authorize access="hasRole('ROLE_ADMIN')">
+                     <sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('APP_USER')">
                     <li id="AuditAdminli"><a href="allSchedules"> <i class="fa fa-history"></i>Audits</a></li>
                     </sec:authorize>
                     <li id="NCRLi"><a href="NCR"> <i class="fa fa-ticket"></i>NCR </a></li>

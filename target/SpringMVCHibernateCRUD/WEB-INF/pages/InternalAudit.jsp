@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
     <%@page session="true"%>
+    <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+    <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
     
 <!DOCTYPE html>
 <html>
@@ -178,11 +182,11 @@ $(document).ready(function () {
           
           <div class="form-group">
             <label class="control-label">Report Created by</label>
-            <input  maxlength="100" type="text" class="form-control" placeholder="Report Created by"  />
+            <input  maxlength="100" type="text" class="form-control" placeholder="Report Created by" readonly="true" value="${pageContext.request.userPrincipal.name}"  />
           </div>
           <div class="form-group">
             <label class="control-label">Date  </label>
-            <input maxlength="100" type="text" class="form-control" placeholder="Date" />
+            <input maxlength="100" type="date" class="form-control" placeholder="Date" />
           </div>
           <div class="form-group">
             <label class="control-label">Process Name</label>

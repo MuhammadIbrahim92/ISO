@@ -359,9 +359,12 @@ $(document).ready(function() {
 			</tbody>
 			
 		</table>
+		   <sec:authorize access="hasRole('ROLE_ADMIN')">
+		
 		<h4>
 			New Schedule Register <a href="newSchedule">here</a>
 		</h4>
+		  </sec:authorize>
 		</div>
 		</div>
 	</div>

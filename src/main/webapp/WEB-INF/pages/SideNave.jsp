@@ -113,17 +113,17 @@ nav.side-navbar ul li li a {
 }
 
 nav.side-navbar ul li.active > a {
-  background: #a6c!important;
+  background: #148ab5 !important;
   color: #fff;
   border-left: 4px solid #3b25e6;
 }
 
 nav.side-navbar ul li.active > a:hover {
-  background: #a6c!important;
+  background: #148ab5 !important;
 }
 
 nav.side-navbar ul li li.active > a {
-  background: #a6c!important;
+  background: #148ab5 !important;
 }
 
 nav.side-navbar ul li ul {
@@ -290,6 +290,37 @@ nav.side-navbar.shrinked .sidebar-header .title {
           <span class="heading">Main</span>
            <ul class="list-unstyled">
                     <li id="Dashboardli"><a href="Dashboard"> <i class="fa fa-area-chart"></i>Dashboard</a></li>
+					<li><a href="#ObjectiveDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon icon-form"></i>Objective Manager</a>
+                      <ul id="ObjectiveDropdown" class="collapse list-unstyled ">
+                        <li><li id="AuditAdminli"><a href="allSchedules"><i class="fa fa-tasks"></i>Planning</a></li>
+                        <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
+                      </ul>
+                    </li>
+					<li><a href="#ActionDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon icon-list-1"></i>Action Manager</a>
+                      <ul id="ActionDropdown" class="collapse list-unstyled ">
+                        <li><a href="AuditPlan"><i class="fa fa-tasks"></i>Planning</a></li>
+                        <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
+                      </ul>
+                    </li>
+					<li><a href="#InternalDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon icon-padnote"></i>Internal Audit</a>
+                      <ul id="InternalDropdown" class="collapse list-unstyled ">
+                        <li><a href="InternalAudit"><i class="fa fa-tasks"></i>Planning</a></li>
+                        <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
+                      </ul>
+                    </li>
+					<li><a href="#MeetingDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Management Review</a>
+                      <ul id="MeetingDropdown" class="collapse list-unstyled ">
+                        <li><a href="#"><i class="fa fa-handshake-o" aria-hidden="true"></i>Planning</a></li>
+                        <li><a href="#"><i class="fa fa-bar-chart"></i>Previous Meetings reports</a></li>
+                      </ul>
+                    </li>
+					<li><a href="#CRSDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list-alt" aria-hidden="true"></i>Non-conformities Actions</a>
+                      <ul id="CRSDropdown" class="collapse list-unstyled ">
+                        <li><a href="NCR"><i class="fa fa-history"></i>CARs Log</a></li>
+                        <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
+                      </ul>
+                    </li>
+					 <!-- Sidebar Navidation Menus
                      <sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('APP_USER')">
                     <li id="AuditAdminli"><a href="allSchedules"> <i class="fa fa-history"></i>Audits</a></li>
                     </sec:authorize>
@@ -300,7 +331,7 @@ nav.side-navbar.shrinked .sidebar-header .title {
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                     <li id="Reportsli"><a href="Reporting"> <i class="fa fa-bar-chart"></i>Reports </a></li>
                   	</sec:authorize>
-
+-->
           </ul>
         </nav>           
 </body>

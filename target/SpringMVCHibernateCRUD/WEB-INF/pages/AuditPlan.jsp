@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+   <%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
     <%@page session="true"%>
     <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+    <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
     
 <!DOCTYPE html>
 <html>
@@ -100,6 +103,7 @@
 </style>
 <script>
 $(document).ready(function () {
+
 	  var navListItems = $('div.setup-panel div a'),
 	          allWells = $('.setup-content'),
 	          allNextBtn = $('.nextBtn');
@@ -175,30 +179,109 @@ $(document).ready(function () {
 
 
   
-  <form:form action="saveSchedule" method="post" modelAttribute="schedule">
+  <form:form action="saveSchedule" method="post" modelAttribute="schedule" id="saveSchedule">
     <form:hidden path="SCHEDULE_ID"/>
       <div class="col-xs-6 col-md-offset-3">
         <div class="col-md-6">
           
           <div class="form-group">
             <label >Audit Area</label>
-          
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+            
+<c:choose> 
+  <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0  || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
           <form:select  class="form-control " path="SCHEDULE_AUDITAREA" items="${listAuditAreas}" itemValue="audit_area_id" itemLabel="aUDIT_AREA_NAME"/>
+  </c:when>
+  <c:otherwise>
+          <form:select  class="form-control " path="SCHEDULE_AUDITAREA" items="${listAuditAreas}" itemValue="audit_area_id" itemLabel="aUDIT_AREA_NAME" readonly="readonly"/>
+  </c:otherwise>
+</c:choose>
+                    </sec:authorize>
+ <sec:authorize access="!hasRole('ROLE_ADMIN')">
+           <form:select  class="form-control " path="SCHEDULE_AUDITAREA" items="${listAuditAreas}" itemValue="audit_area_id" itemLabel="aUDIT_AREA_NAME" readonly="readonly"/>
+ 
+           </sec:authorize>
+          
           </div>
           <div class="form-group">
             <label class="control-label">Auditor  </label>
-             <form:select  class="form-control " path="SCHEDULE_AUDITOR_ID" items="${listUsers}" itemValue="uSER_ID" itemLabel="uSER_NAME"/> 
+             <sec:authorize access="hasRole('ROLE_ADMIN')">
+           
+            <c:choose> 
+  <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0 || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
+            
+             <form:select  class="form-control " path="SCHEDULE_AUDITOR_ID" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME"/> 
+  </c:when>
+  <c:otherwise>
+               <form:select  class="form-control " path="SCHEDULE_AUDITOR_ID" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME" readonly="readonly"/> 
+  
+  </c:otherwise>
+</c:choose>
+           </sec:authorize>
+ <sec:authorize access="!hasRole('ROLE_ADMIN')">
+                <form:select  class="form-control " path="SCHEDULE_AUDITOR_ID" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME" readonly="readonly"/> 
+ 
+      </sec:authorize>    
           </div>
           <div class="form-group">
             <label class="control-label">Auditee</label>
-            
-          <form:select  class="form-control " path="SCHEDULE_AUDITEE_ID" items="${listUsers}" itemValue="uSER_ID" itemLabel="uSER_NAME"/>
+             <sec:authorize access="hasRole('ROLE_ADMIN')">
+           <c:choose> 
+  <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0 || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
+              
+          <form:select  class="form-control " path="SCHEDULE_AUDITEE_ID" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME"/>
+       </c:when>
+  <c:otherwise>
+            <form:select  class="form-control " path="SCHEDULE_AUDITEE_ID" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME" readonly="readonly"/>
+  
+          </c:otherwise>
+</c:choose>
+ </sec:authorize>
+ <sec:authorize access="!hasRole('ROLE_ADMIN')">
+             <form:select  class="form-control " path="SCHEDULE_AUDITEE_ID" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME" readonly="readonly"/>
+ 
+  </sec:authorize>
           </div>
           <div class="form-group">
             <label class="control-label">Date</label>
+             <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <c:choose> 
+  <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0 || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
         <form:input maxlength="100" type="Date" path="SCHEDULE_DATE" required="required" class="form-control" placeholder="Enter The Date" />
+           </c:when>
+  <c:otherwise>
+          <form:input maxlength="100" type="Date" path="SCHEDULE_DATE" required="required" class="form-control" placeholder="Enter The Date" readonly="true" />
+  
+   </c:otherwise>
+</c:choose>
+ </sec:authorize>
+  <sec:authorize access="!hasRole('ROLE_ADMIN')">
+            <form:input maxlength="100" type="Date" path="SCHEDULE_DATE" required="required" class="form-control" placeholder="Enter The Date" readonly="true" />
+  
+   </sec:authorize>
+  
+ 
           </div>
+           <sec:authorize access="hasRole('ROLE_ADMIN')">
+           <c:choose>
+             <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED' || schedule.SCHEDULE_ID==0 }">
           <button class="btn btn-primary" type="submit" >Initiate Schedule</button>
+            </c:when>
+            </c:choose>
+          
+          </sec:authorize>
+          <c:choose>
+         <c:when test="${schedule.SCHEDULE_STATE == 'NEW' && schedule.SCHEDULE_AUDITOR_ID==pageContext.request.userPrincipal.name }">
+          <a class="btn btn-success" href="AcceptAuditor?id=${schedule.SCHEDULE_ID}" >Accept Schedule</a>
+           <a class="btn btn-danger" href="RejectAuditor?id=${schedule.SCHEDULE_ID}" >Reject Schedule</a>
+          </c:when>
+         </c:choose>
+   <c:choose>
+         <c:when test="${schedule.SCHEDULE_STATE == 'AUDITOR_ACCEPTED' && schedule.SCHEDULE_AUDITEE_ID==pageContext.request.userPrincipal.name }">
+          <a class="btn btn-success" href="AcceptAuditee?id=${schedule.SCHEDULE_ID}" >Accept Schedule</a>
+           <a class="btn btn-danger" href="RejectAuditee?id=${schedule.SCHEDULE_ID}" >Reject Schedule</a>
+          </c:when>
+         </c:choose>
         </div>
       </div>
     

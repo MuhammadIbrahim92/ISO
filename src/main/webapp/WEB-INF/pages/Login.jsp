@@ -38,9 +38,10 @@
               <div class="info d-flex align-items-center">
                 <div class="content">
                   <div class="logo">
-                    <h1>Dashboard</h1>
+				  <img src="resources/img/QMS_White.png" style="max-width:100%"/>
+                    
                   </div>
-                  <p>QM Connect Login</p>
+                 
                 </div>
               </div>
             </div>
@@ -62,7 +63,11 @@
 
 		<form name='loginForm'
 			action="<c:url value='/j_spring_security_check' />" method='POST' class="form-validate">
-                     <div class="form-group">
+                        <div class="form-group">
+                          <img src="resources/img/logo_ar.svg" style="max-width:100%"/>
+                    </div>
+			                    
+					<div class="form-group">
                       <input id="login-username" type="text" name='username' required data-msg="Please enter your username" class="input-material">
                       <label for="login-username" class="label-material">User Name</label>
                     </div>

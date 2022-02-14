@@ -129,13 +129,14 @@ function formSubmit() {
 	</form>
 <nav class="navbar navbar-expand-sm navbar-dark secondary-color">
                   <a href="index.html" class="navbar-brand d-none d-sm-inline-block">
-                  <div class="brand-text d-none d-lg-inline-block"><span>ISO </span><strong>Dashboard</strong></div>
-                  <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
-                 
+                  <div class="brand-text d-none d-lg-inline-block"><span>QMS </span><strong>Connect</strong></div>
+                  <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>QMS</strong></div>
+				  </a>
+                
                  <a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
-
+				   
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
+                           
                     <!-- Left -->
                     <ul class="navbar-nav mr-auto">
                        
