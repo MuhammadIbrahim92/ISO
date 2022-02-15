@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -151,6 +152,10 @@ public class ScheduleAuditController {
 		 try {
 			 System.out.println("before Send HTML  Email ");
 				MimeMessage mimeMessage = mailSender.createMimeMessage();
+				
+				 System.out.println(((org.springframework.mail.javamail.JavaMailSenderImpl)mailSender).getUsername());
+				 System.out.println(((org.springframework.mail.javamail.JavaMailSenderImpl)mailSender).getPassword());
+
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true, "utf-8");
 			helper.setTo(new String[]{"m.ibrahim@mts-mea.com","memam.quality@gmail.com"});
 			helper.setSubject("New Audit Has Been Created");
