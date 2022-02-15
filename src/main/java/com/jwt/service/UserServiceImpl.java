@@ -41,7 +41,9 @@ public class UserServiceImpl {
 	public User getUser(int userId) {
 		return userDAO.getUser(userId);
 	}
-
+	public User getUserByName(String userName) {
+		return userDAO.getUserByName(userName);
+	}
 	public User updateUser(User user) {
 		// TODO Auto-generated method stub
 		return userDAO.updateUser(user);

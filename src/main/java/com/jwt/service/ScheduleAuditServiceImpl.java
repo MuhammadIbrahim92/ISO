@@ -30,6 +30,10 @@ public class ScheduleAuditServiceImpl {
 		return scheduleAuditDAO.getAllSchedules();
 	}
 	@Transactional
+	public List<ScheduleAudit> getAllAcceptedSchedules() {
+		return scheduleAuditDAO.getAllAcceptedSchedules();
+	}
+	@Transactional
 	public List<ScheduleAudit> getAllCurrentUser(String UserName) {
 		return scheduleAuditDAO.getAllCurrentUser(UserName);
 	}

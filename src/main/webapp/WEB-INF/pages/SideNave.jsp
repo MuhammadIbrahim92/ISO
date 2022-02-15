@@ -290,25 +290,26 @@ nav.side-navbar.shrinked .sidebar-header .title {
           <span class="heading">Main</span>
            <ul class="list-unstyled">
                     <li id="Dashboardli"><a href="Dashboard"> <i class="fa fa-area-chart"></i>Dashboard</a></li>
-					<li><a href="#ObjectiveDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon icon-form"></i>Objective Manager</a>
+					<li><a href="#ObjectiveDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-line-chart" aria-hidden="true"></i>Objective Manager</a>
                       <ul id="ObjectiveDropdown" class="collapse list-unstyled ">
-                        <li><li id="AuditAdminli"><a href="allSchedules"><i class="fa fa-tasks"></i>Planning</a></li>
+                        <li><li ><a href="allSchedules"><i class="fa fa-tasks"></i>Planning</a></li>
                         <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
                       </ul>
                     </li>
-					<li><a href="#ActionDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon icon-list-1"></i>Action Manager</a>
+					<li><a href="#ActionDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list"></i>Action Manager</a>
                       <ul id="ActionDropdown" class="collapse list-unstyled ">
                         <li><a href="AuditPlan"><i class="fa fa-tasks"></i>Planning</a></li>
                         <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
                       </ul>
                     </li>
-					<li><a href="#InternalDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon icon-padnote"></i>Internal Audit</a>
+					<li><a href="#InternalDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-clipboard"></i></i>Internal Audit</a>
                       <ul id="InternalDropdown" class="collapse list-unstyled ">
-                        <li><a href="InternalAudit"><i class="fa fa-tasks"></i>Planning</a></li>
-                        <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
+                        <li id="AuditAdminli"><a href="allSchedules"><i class="fa fa-tasks"></i>Planning</a></li>
+                        <li  id="AuditAdminli2"><a href="allSchedulesCal"><i class="fa fa-calendar"></i>internal Audit Calendar</a></li>
+                        <li id="AuditAdminli3"><a href="allAcceptedSchedules"><i class="fa fa-bar-chart"></i>Reports</a></li>
                       </ul>
                     </li>
-					<li><a href="#MeetingDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Management Review</a>
+					<li><a href="#MeetingDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-briefcase" aria-hidden="true"></i>Management Review</a>
                       <ul id="MeetingDropdown" class="collapse list-unstyled ">
                         <li><a href="#"><i class="fa fa-handshake-o" aria-hidden="true"></i>Planning</a></li>
                         <li><a href="#"><i class="fa fa-bar-chart"></i>Previous Meetings reports</a></li>

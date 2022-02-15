@@ -18,7 +18,7 @@ public class AuditTransaction implements Serializable{
 	private Integer trans_id;
 
 	@Column
-	private int trans_createdby_id;
+	private String trans_createdby_id;
 
 	
 //	@OneToOne(cascade = CascadeType.ALL)
@@ -32,7 +32,7 @@ public class AuditTransaction implements Serializable{
 	private String trans_process_name;
 	
 	@Column
-	private int trans_auditee_id;
+	private String trans_auditee_id;
 	
 	@Column
 	private String trans_executive_summery;
@@ -50,7 +50,7 @@ public class AuditTransaction implements Serializable{
 	private String trans_audit_status;
 	
 	@Column
-	private char trans_nc_flag;
+	private int trans_nc_flag;
 
 	public Integer getTrans_id() {
 		return trans_id;
@@ -60,11 +60,11 @@ public class AuditTransaction implements Serializable{
 		this.trans_id = trans_id;
 	}
 
-	public int getTrans_createdby_id() {
+	public String getTrans_createdby_id() {
 		return trans_createdby_id;
 	}
 
-	public void setTrans_createdby_id(int trans_createdby_id) {
+	public void setTrans_createdby_id(String trans_createdby_id) {
 		this.trans_createdby_id = trans_createdby_id;
 	}
 
@@ -84,11 +84,11 @@ public class AuditTransaction implements Serializable{
 		this.trans_process_name = trans_process_name;
 	}
 
-	public int getTrans_auditee_id() {
+	public String getTrans_auditee_id() {
 		return trans_auditee_id;
 	}
 
-	public void setTrans_auditee_id(int trans_auditee_id) {
+	public void setTrans_auditee_id(String trans_auditee_id) {
 		this.trans_auditee_id = trans_auditee_id;
 	}
 
@@ -132,11 +132,11 @@ public class AuditTransaction implements Serializable{
 		this.trans_audit_status = trans_audit_status;
 	}
 
-	public char getTrans_nc_flag() {
+	public int getTrans_nc_flag() {
 		return trans_nc_flag;
 	}
 
-	public void setTrans_nc_flag(char trans_nc_flag) {
+	public void setTrans_nc_flag(int trans_nc_flag) {
 		this.trans_nc_flag = trans_nc_flag;
 	}
 

@@ -1,10 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
    <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-    <%@page session="true"%>
-    <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-    <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
+   <%@page session="true"%>
+   
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 <head>
@@ -234,7 +235,7 @@ $(document).ready(function() {
      </jsp:include>
      <div class="page-content d-flex align-items-stretch"> 
        <jsp:include page="SideNave.jsp">
-         <jsp:param name="param1" value="AuditAdminli"/>
+         <jsp:param name="param1" value="AuditAdminli3"/>
      </jsp:include>
 <div class="content-inner">
 
@@ -251,7 +252,7 @@ $(document).ready(function() {
                     <form class="d-flex justify-content-center">
                         <!-- Default input -->
                         <input type="search" placeholder="Type your query" aria-label="Search" class="form-control">
-                        <button class="btn btn-info btn-sm my-0 p waves-effect waves-light" type="submit">
+                        <button class="btn btn-primary btn-sm my-0 p waves-effect waves-light" type="submit">
                             <i class="fa fa-search"></i>
                         </button>
 
@@ -265,7 +266,7 @@ $(document).ready(function() {
     <span id="spnFilePath"></span>
     <input type="file" id="FileUpload1" style="display: none" />
  <p >
-    <button class="btn btn-info"  type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    <button class="btn btn-primary"  type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
         Advanced Search
     </button>
 </p>
@@ -322,7 +323,6 @@ $(document).ready(function() {
             
 			 <thead>
 			<tr>
-			<th>Serial</th>
 			<th>Department</th>
 			<th>Date</th>
 			<th>Auditor</th>
@@ -333,7 +333,6 @@ $(document).ready(function() {
 			</thead>
 			<tfoot>
 			<tr>
-			<th>Serial</th>
 			<th>Department</th>
 			<th>Date</th>
 			<th>Auditor</th>
@@ -345,48 +344,21 @@ $(document).ready(function() {
             <tbody>
 			<c:forEach var="schedule" items="${listSchedules}">
 				<tr>
-                    <td>${schedule.SCHEDULE_ID}</td>
+
 					<td>${schedule.SCHEDULE_AUDITAREA_NAME}</td>
 					<td>${schedule.SCHEDULE_DATE}</td>
 					<td>${schedule.SCHEDULE_AUDITOR_ID}</td>
 					<td>${schedule.SCHEDULE_AUDITEE_ID}</td>
 					<td>${schedule.SCHEDULE_STATE}</td>
-					<td>
-			
-			
-				<c:choose> 
-  <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0  || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
-<a href="editSchedule?id=${schedule.SCHEDULE_ID}">Edit</a>
-						  </c:when>
-						   <c:otherwise>
-						   <a href="InternalAudit?id=${schedule.SCHEDULE_ID}">Open Report</a>
-						   
-						   </c:otherwise>
-						  
-        </c:choose>
-			
-			
-			
-						&nbsp;&nbsp;&nbsp;&nbsp; 
-						<c:choose> 
-  <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0  || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
-<a href="deleteSchedule?id=${schedule.SCHEDULE_ID}">Delete</a>
-						  </c:when>
-        </c:choose>
-						
-				</td>
+					<td><a href="InternalAudit?id=${schedule.SCHEDULE_ID}">Open Report</a>
+						</td>
 
 				</tr>
 			</c:forEach>
 			</tbody>
 			
 		</table>
-		   <sec:authorize access="hasRole('ROLE_ADMIN')">
-		
-		<h4>
-			New Schedule Register <a href="newSchedule">here</a>
-		</h4>
-		  </sec:authorize>
+		   
 		</div>
 		</div>
 	</div>

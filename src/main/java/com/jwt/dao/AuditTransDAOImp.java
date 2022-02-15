@@ -18,7 +18,7 @@ public class AuditTransDAOImp {
 	private SessionFactory sessionFactory;
 
 	public void addAuditTransaction(AuditTransaction auditTransaction) {
-		sessionFactory.getCurrentSession().saveOrUpdate(auditTransaction);
+		sessionFactory.getCurrentSession().save(auditTransaction);
 
 	}
 
@@ -48,6 +48,12 @@ public class AuditTransDAOImp {
 				AuditTransaction.class, auditTransactionId);
 	}
 
+	public AuditTransaction getAuditTransactionbySchedule(int auditTransactionId) {
+		List<AuditTransaction> allAuditTransactions = sessionFactory.getCurrentSession().createQuery("from AuditTransaction where trans_schedule_id = "+auditTransactionId).list();
+
+		return allAuditTransactions.get(0);
+		
+	}
 	
 	public AuditTransaction updateAuditTransaction(AuditTransaction auditTransaction) {
 		sessionFactory.getCurrentSession().update(auditTransaction);

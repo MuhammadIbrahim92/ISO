@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name = "SCHEDULE_AUDIT")
@@ -42,8 +45,17 @@ public class ScheduleAudit implements Serializable{
 	@Column
 	private String SCHEDULE_STATE;
 	
+	@Column(updatable=false, insertable=false)
+    @Formula("(Select la.audit_area_name from audit_area la Where la.audit_area_id=SCHEDULE_AUDITAREA)")
+	private String SCHEDULE_AUDITAREA_NAME;
 
+	public String getSCHEDULE_AUDITAREA_NAME() {
+		return SCHEDULE_AUDITAREA_NAME;
+	}
 
+	public void setSCHEDULE_AUDITAREA_NAME(String sCHEDULE_AUDITAREA_NAME) {
+		SCHEDULE_AUDITAREA_NAME = sCHEDULE_AUDITAREA_NAME;
+	}
 	public int getSCHEDULE_ID() {
 		return SCHEDULE_ID;
 	}

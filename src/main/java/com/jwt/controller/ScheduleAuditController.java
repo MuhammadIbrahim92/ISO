@@ -24,10 +24,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 
 import com.jwt.model.AuditArea;
+import com.jwt.model.AuditTransaction;
 import com.jwt.model.Employee;
 import com.jwt.model.ScheduleAudit;
 import com.jwt.model.User;
 import com.jwt.service.AuditAreaServiceImpl;
+import com.jwt.service.AuditTransServiceImpl;
 import com.jwt.service.EmployeeService;
 import com.jwt.service.ScheduleAuditServiceImpl;
 import com.jwt.service.UserServiceImpl;
@@ -49,9 +51,51 @@ public class ScheduleAuditController {
 	@Autowired
 	private ScheduleAuditServiceImpl scheduleAuditService;
 	@Autowired
+	private AuditTransServiceImpl auditTransService;
+	
+	@Autowired
 	private UserServiceImpl userService;
 	@Autowired
 	private AuditAreaServiceImpl auditAreaService;
+	
+	@Autowired
+	private EmployeeService employeeService;
+
+	
+	@RequestMapping(value = "/InternalAudit")
+	public ModelAndView internalAudit(ModelAndView model,HttpServletRequest request) throws IOException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+        
+		List<User> listUsers = userService.getAllUsers();
+		List<AuditArea> listAuditAreas = auditAreaService.getAllAuditAreas();
+		model.addObject("listUsers",listUsers );
+		model.addObject("listAuditAreas",listAuditAreas );	
+		int scheduleId = Integer.parseInt(request.getParameter("id"));
+		ScheduleAudit schedule = scheduleAuditService.getSchedule(scheduleId);
+		
+		if(schedule.getSCHEDULE_STATE().equalsIgnoreCase("SUBMITTED")) {
+			AuditTransaction tran= auditTransService.getAuditTransactionBySchedule(scheduleId);
+			model.addObject("trans", tran);
+		}
+		else {
+		AuditTransaction tran=new AuditTransaction();
+		tran.setTrans_process_name("internal Audit");
+		tran.setTrans_auditee_id(schedule.getSCHEDULE_AUDITOR_ID());
+		tran.setTrans_date(schedule.getSCHEDULE_DATE());
+		tran.setTrans_schedule_id(scheduleId);
+		tran.setTrans_createdby_id(username);
+		tran.setTrans_id(0);
+		model.addObject("trans", tran);
+		}
+		
+		model.addObject("schedule", schedule);
+		
+//		model.setViewName("AuditPlan");
+    	model.setViewName("InternalAudit");
+	//	model.setViewName("NCR");
+		return model;
+	}
 
 	@RequestMapping(value = "/newSchedule", method = RequestMethod.GET)
 	public ModelAndView newSchedule(ModelAndView model) {
@@ -67,6 +111,28 @@ public class ScheduleAuditController {
 		return model;
 	}
 
+	@RequestMapping(value = "/saveScheduleTrans", method = RequestMethod.POST)
+	public ModelAndView saveScheduleTrans(@ModelAttribute AuditTransaction Audtrans) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		
+		
+		
+		if (Audtrans.getTrans_id() == 0) { // if employee id is 0 then creating the
+			Audtrans.setTrans_audit_status("SUBMITTED");
+           auditTransService.addAuditTransaction(Audtrans);
+           int scheduleId = Audtrans.getTrans_schedule_id();
+   		ScheduleAudit schedule = scheduleAuditService.getSchedule(scheduleId);
+   	    schedule.setSCHEDULE_STATE("SUBMITTED");
+   		scheduleAuditService.updateSchedule(schedule);
+		} 
+				
+		return new ModelAndView("redirect:/allAcceptedSchedules");
+	}
+
+	
+	
+	
 	@RequestMapping(value = "/saveSchedule", method = RequestMethod.POST)
 	public ModelAndView saveSchedule(@ModelAttribute ScheduleAudit schedule) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -95,7 +161,7 @@ public class ScheduleAuditController {
 		        mailSender.send(mimeMessage);
 		        System.out.println("after Send HTML  Email ");
 
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -171,12 +237,48 @@ public class ScheduleAuditController {
 			 listSchedules = scheduleAuditService.getAllCurrentUser(requestWrapper.getUserPrincipal().getName());
 
 		}
-		System.out.println("SIZeeeee : "+listSchedules.size());
-		System.out.println("SIZeeeee : "+listSchedules.get(0).getSCHEDULE_DEPT());
+        System.out.println("New One");
 		model.addObject("listSchedules", listSchedules);
 		// MAGED: create new page for all schedules like home page 
 		model.setViewName("allSchedules");
 		return model;
 	}
 
+	@RequestMapping(value = "/allSchedulesCal", method = RequestMethod.GET)
+	public ModelAndView allSchedulesCal(ModelAndView model,SecurityContextHolderAwareRequestWrapper requestWrapper) throws IOException {
+		List<ScheduleAudit> listSchedules=null;
+		if(requestWrapper.isUserInRole("ROLE_ADMIN")) {
+		 listSchedules = scheduleAuditService.getAllSchedules();
+		}
+		else {
+			 listSchedules = scheduleAuditService.getAllCurrentUser(requestWrapper.getUserPrincipal().getName());
+
+		}
+        System.out.println("New One");
+		model.addObject("listSchedules", listSchedules);
+		// MAGED: create new page for all schedules like home page 
+		model.setViewName("Calendar");
+		return model;
+	}
+
+	
+	@RequestMapping(value = "/allAcceptedSchedules", method = RequestMethod.GET)
+	public ModelAndView allAcceptedSchedules(ModelAndView model,SecurityContextHolderAwareRequestWrapper requestWrapper) throws IOException {
+		List<ScheduleAudit> listSchedules=null;
+		if(requestWrapper.isUserInRole("ROLE_ADMIN")) {
+		 listSchedules = scheduleAuditService.getAllAcceptedSchedules();
+		}
+		else {
+			 listSchedules = scheduleAuditService.getAllCurrentUser(requestWrapper.getUserPrincipal().getName());
+
+		}
+        System.out.println("New One");
+        
+		model.addObject("listSchedules", listSchedules);
+		// MAGED: create new page for all schedules like home page 
+		model.setViewName("allAcceptedSchedules");
+		return model;
+	}
+
+	
 }

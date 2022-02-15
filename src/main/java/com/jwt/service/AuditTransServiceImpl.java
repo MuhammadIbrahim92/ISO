@@ -43,6 +43,9 @@ public class AuditTransServiceImpl {
 	public AuditTransaction getAuditTransaction(int auditTransactionId) {
 		return auditTransactionDAO.getAuditTransaction(auditTransactionId);
 	}
+	public AuditTransaction getAuditTransactionBySchedule(int ScheduleId) {
+		return auditTransactionDAO.getAuditTransactionbySchedule(ScheduleId);
+	}
 
 	public AuditTransaction updateAuditTransaction(AuditTransaction auditTransaction) {
 		// TODO Auto-generated method stub

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import com.jwt.model.Employee;
+import com.jwt.model.ScheduleAudit;
 import com.jwt.service.EmployeeService;
+import com.jwt.service.ScheduleAuditServiceImpl;
 
 @Controller
 public class EmployeeController {
@@ -28,6 +30,9 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 
+	@Autowired
+	private ScheduleAuditServiceImpl scheduleAuditService;
+	
 	@RequestMapping(value = "/NCR")
 	public ModelAndView listEmployee(ModelAndView model) throws IOException {
 		List<Employee> listEmployee = employeeService.getAllEmployees();
@@ -48,17 +53,7 @@ public class EmployeeController {
 		//model.setViewName("NCR");
 		return model;
 	}
-	@RequestMapping(value = "/InternalAudit")
-	public ModelAndView internalAudit(ModelAndView model) throws IOException {
-		List<Employee> listEmployee = employeeService.getAllEmployees();
-		model.addObject("listEmployee", listEmployee);
-//		model.setViewName("home");
-//		model.setViewName("AuditPlan");
-    	model.setViewName("InternalAudit");
-	//	model.setViewName("NCR");
-		return model;
-	}
-
+	
 	@RequestMapping(value = "/newEmployee", method = RequestMethod.GET)
 	public ModelAndView newContact(ModelAndView model) {
 		Employee employee = new Employee();

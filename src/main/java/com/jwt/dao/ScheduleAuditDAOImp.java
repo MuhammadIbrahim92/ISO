@@ -27,6 +27,12 @@ public class ScheduleAuditDAOImp {
 				.list();
 	}
 	@SuppressWarnings("unchecked")
+	public List<ScheduleAudit> getAllAcceptedSchedules() {
+
+		return sessionFactory.getCurrentSession().createQuery("from ScheduleAudit where SCHEDULE_STATE='ACCEPTED'")
+				.list();
+	}
+	@SuppressWarnings("unchecked")
 	public List<ScheduleAudit> getAllCurrentUser(String CurrentUser) {
 
 		return sessionFactory.getCurrentSession().createQuery("from ScheduleAudit where SCHEDULE_AUDITOR_ID ='"+CurrentUser+"' or SCHEDULE_AUDITEE_ID='"+CurrentUser+"'")

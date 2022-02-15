@@ -47,6 +47,11 @@ public class UserDAOImp {
 				User.class, userId);
 	}
 
+	public User getUserByName(String userName) {
+		List<User> allUsers = sessionFactory.getCurrentSession().createQuery("from User where uSER_NAME='"+userName+"'").list();
+		
+		   return allUsers.get(0);
+	}
 	
 	public User updateUser(User user) {
 		sessionFactory.getCurrentSession().update(user);
