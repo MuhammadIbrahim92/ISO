@@ -355,7 +355,7 @@ $(document).ready(function() {
 			
 			
 				<c:choose> 
-  <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0  || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
+  <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0  || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'||schedule.SCHEDULE_STATE == 'AUDITOR_ACCEPTED'||schedule.SCHEDULE_STATE == 'AUDITEE_ACCEPTED'}">
 <a href="editSchedule?id=${schedule.SCHEDULE_ID}">Edit</a>
 						  </c:when>
 						   <c:otherwise>
