@@ -260,8 +260,12 @@ $(document).ready(function () {
   </div>
   
 </div>
-
-<button class="btn btn-info" type="submit" style="margin-left: 45%"  hidden="${schedule.SCHEDULE_STATE == 'SUBMITTED'}">Submit Report</button>
+ <c:choose>
+         <c:when test="${schedule.SCHEDULE_STATE='SUBMITTED'}">
+  
+<button class="btn btn-info" type="submit" style="margin-left: 45%"  >Submit Report</button>
+</c:when>
+         </c:choose>
      </form:form>
    
     
