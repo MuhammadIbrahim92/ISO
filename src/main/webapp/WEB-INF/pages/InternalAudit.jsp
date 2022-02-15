@@ -261,7 +261,7 @@ $(document).ready(function () {
   
 </div>
  <c:choose>
-         <c:when test="${schedule.SCHEDULE_STATE='SUBMITTED'}">
+         <c:when test="${schedule.SCHEDULE_STATE='ACCEPTED'}">
   
 <button class="btn btn-info" type="submit" style="margin-left: 45%"  >Submit Report</button>
 </c:when>
