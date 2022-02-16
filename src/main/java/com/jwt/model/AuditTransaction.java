@@ -51,6 +51,17 @@ public class AuditTransaction implements Serializable{
 	
 	@Column
 	private int trans_nc_flag;
+	
+	@Column(updatable=false, insertable=false)
+	private String Operation ;
+
+	public String getOperation() {
+		return Operation;
+	}
+
+	public void setOperation(String operation) {
+		Operation = operation;
+	}
 
 	public Integer getTrans_id() {
 		return trans_id;

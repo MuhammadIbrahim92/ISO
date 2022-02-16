@@ -168,6 +168,7 @@ $(document).ready(function () {
                    <button class="btn btn-info" 
                   
                    style="margin-left: 70%" > Export PDF</button>
+				   
                    
                    
 
@@ -234,9 +235,13 @@ $(document).ready(function () {
     Audit Findings
       </a>
         
-       
-      <a class="text-white" hidden="${schedule.SCHEDULE_STATE == 'SUBMITTED'}" data-toggle="modal" data-target=".bd-example-modal-lg" style="margin-left: 70% !important;">      
+       <c:choose>
+             <c:when test="${schedule.SCHEDULE_STATE == 'ACCEPTED'}">
+           <a class="text-white"  data-toggle="modal" data-target=".bd-example-modal-lg" style="margin-left: 70% !important;">      
   <i class="fa fa-plus" ></i> add New NCR </a>
+            </c:when>
+            </c:choose>
+    
 
       
     </div>
@@ -260,12 +265,18 @@ $(document).ready(function () {
   </div>
   
 </div>
+       <c:choose>
+         <c:when test="${schedule.SCHEDULE_STATE=='ACCEPTED'}">
+  
+<form:input class="btn btn-info" path="Operation" type="submit" style="margin-left:40%;"  value="Save"/>
+</c:when>
+         </c:choose>
  <c:choose>
          <c:when test="${schedule.SCHEDULE_STATE=='ACCEPTED'}">
   
-<button class="btn btn-info" type="submit" style="margin-left: 45%"  >Submit Report</button>
-</c:when>
+<form:input class="btn btn-info" path="Operation" type="submit"  value="Submit"/></c:when>
          </c:choose>
+  
      </form:form>
    
     

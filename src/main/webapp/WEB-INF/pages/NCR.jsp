@@ -1,16 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+   <%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
     <%@page session="true"%>
+    <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+    <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
     
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>ETL</title>
+<title>NCR</title>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.15/css/mdb.min.css" rel="stylesheet">
+<link href="resources/css/mdb.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
@@ -154,7 +158,7 @@ $(document).ready(function () {
                 <div class="card-body d-sm-flex justify-content-between">
 
                       <form class="d-flex justify-content-center">
-                     <img alt="" src="resources/img/appleResize.jpg"/>
+                     <img alt="" src="resources/img/Icon.png"/>
                       <h4 class="mb-2 mb-sm-0 pt-1">
                          <span> &nbsp Non-confirmity report (NCR)<br>&nbsp CORRECTIVE ACTION</span>
                          
@@ -171,20 +175,20 @@ $(document).ready(function () {
   
 
   
-  <form role="form" action="" method="post">
-    
+  <form:form role="form" action="saveNCR" method="post"  modelAttribute="schedule">
+    <form:hidden path="ID"/>
      <div class="form-row">
           
           <div class="col">
           <div class="form-group">
             <label class="control-label">Department</label>
-            <input  maxlength="100" type="text" class="form-control" placeholder="Department"  />
+          <form:select  class="form-control " path="ncr_dept_id" items="${listAuditAreas}" disabled="${schedule.ncr_status == 'CLOSED'}" itemValue="audit_area_id" itemLabel="aUDIT_AREA_NAME" />
           </div>
           </div>
           <div class="col">
           <div class="form-group">
             <label class="control-label">Date  </label>
-            <input maxlength="100" type="text" class="form-control" placeholder="Date" />
+            <form:input maxlength="100" type="date" class="form-control" placeholder="Date" path="ncr_date" readonly="${schedule.ncr_status == 'CLOSED'}"/>
           </div>
           </div>
           </div>
@@ -192,79 +196,99 @@ $(document).ready(function () {
           <div class="col">
           <div class="form-group">
             <label class="control-label">Other Source</label>
-            <input maxlength="100" type="text" required="required" class="form-control" placeholder="this can be used for data analysis" />
+            <form:input maxlength="100" type="text" path="ncr_source" required="required" class="form-control" placeholder="this can be used for data analysis" readonly="${schedule.ncr_status == 'CLOSED'}"/>
           </div>
           </div>
           <div class="col">
           <div class="form-group">
             <label class="control-label">Procedure ref</label>
-        <input maxlength="100" type="text" required="required" class="form-control" placeholder="(for audit findings only or if applicable)" />
+        <form:input maxlength="100" type="text" path="ncr_other" required="required" class="form-control" placeholder="(for audit findings only or if applicable)" readonly="${schedule.ncr_status == 'CLOSED'}"/>
           </div>
           </div>
           
       
     </div>
     
-  </form>
+ 
    
     
     <div class="card">
-    <div class="card-header text-white bg-primary">
+    <div class="card-header text-white bg-info">
     <a class="text-white" data-toggle="collapse" href="#ExcutiveBody" aria-expanded="false" aria-controls="ExcutiveBody">
     NONCONFORMANCE
   </a>
     </div>
     <div class="card-body" id="ExcutiveBody">
-    <textarea required="required" class="form-control" placeholder="Describe the nonconfirmity..." ></textarea>
+    <form:textarea required="required" path="ncr_desc" class="form-control" placeholder="Describe the nonconfirmity..." readonly="${schedule.ncr_status == 'CLOSED'}"></form:textarea>
    <div class="form-group col-md-6">
             <label class="control-label">Initiator :</label>
-        <input maxlength="100" type="text" required="required" class="form-control" placeholder="(can be auditor or system admin)" />
+        <form:input maxlength="100" path="ncr_initiator" type="text" readonly="true" class="form-control" placeholder="(can be auditor or system admin)" />
           </div>
     </div>
   </div>
+  
   <div class="card">
-    <div class="card-header text-white bg-primary">
+    <div class="card-header text-white bg-info">
      <a class="text-white" data-toggle="collapse" href="#Findings" >
     Root CAUSE (to be completed by the concerned Head of Department)
   </a>
     </div>
     <div class="card-body" id="Findings">
-    <textarea required="required" class="form-control" placeholder="Describe the root cause of the nonconfirmity..." ></textarea>
+    <form:textarea required="required" path="ncr_root_cause" class="form-control" placeholder="Describe the root cause of the nonconfirmity..." readonly="${schedule.ncr_status == 'CLOSED'}"></form:textarea>
     </div>
   </div>
   <div class="card">
-    <div class="card-header text-white bg-primary">
+    <div class="card-header text-white bg-info">
        <a class="text-white" data-toggle="collapse" href="#Reviewed" aria-expanded="false" aria-controls="Reviewed">
     CORRECTIVE ACTION (to be completed by the concerned HoD)
   </a>
      </div>
     <div class="card-body" id="Reviewed">
-    <textarea required="required" class="form-control" placeholder="(Describe the activity to be carried-out to correct the nonconfirmity)" ></textarea>
+    <form:textarea required="required"  path="ncr_corrective_action" class="form-control" placeholder="(Describe the activity to be carried-out to correct the nonconfirmity)" readonly="${schedule.ncr_status == 'CLOSED'}"></form:textarea>
     <div class="form-group col-md-6">
             <label class="control-label">Agreed Completion Date :</label>
-        <input maxlength="100" type="text" required="required" class="form-control" placeholder="Agreed Completion Date" />
+        <form:input maxlength="100" type="Date" path="ncr_completion_date" required="required" class="form-control" placeholder="Agreed Completion Date" readonly="${schedule.ncr_status == 'CLOSED'}"/>
           </div>
     </div>
   </div>
-  
+  		
+   
     <div class="card">
-    <div class="card-header text-white bg-primary">
+    <div class="card-header text-white bg-info">
        <a class="text-white" data-toggle="collapse" href="#verification" aria-expanded="false" aria-controls="verification">
     VERIFICATION (to be completed by the system admin)
   </a>
      </div>
     <div class="card-body" id="verification">
     <label class="control-label">Verification of closure of corrective actions</label>
-    <textarea required="required" class="form-control" placeholder="NOTES..." ></textarea>
+    <form:textarea required="required"  class="form-control" path="ncr_verfication_notes"  placeholder="NOTES..." readonly="${schedule.ncr_status == 'CLOSED'}"></form:textarea>
+   
     <div class="form-group col-md-6">
             <label class="control-label">Date :</label>
-        <input maxlength="100" type="text" required="required" class="form-control" placeholder="Date" />
+        <form:input maxlength="100" type="Date" path="ncr_verfication_date" required="required" class="form-control" placeholder="Date" readonly="${schedule.ncr_status == 'CLOSED'}"/>
+   
           </div>
+                  <form:input maxlength="100" type="hidden" path="ncr_status" required="required" class="form-control" placeholder="Status" />
+          
     </div>
+    <c:choose>
+             <c:when test="${schedule.ncr_status == 'NEW'  || schedule.ID==0 }">
+          <form:input class="btn btn-info" path="Operation" type="submit"  value="Save"/>
+            </c:when>
+            </c:choose>
+            
+            <c:choose>
+             <c:when test="${schedule.ncr_status == 'NEW'  && schedule.ID>0 }">
+          <form:input class="btn btn-info" path="Operation" type="submit"  value="Close"/>
+            </c:when>
+            </c:choose>
+            
   </div>
+ </form:form>  
 </div>
-	
-		
+
+
+	     
 
 	</div>
 	</div>

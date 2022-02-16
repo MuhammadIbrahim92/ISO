@@ -50,8 +50,11 @@ public class AuditTransDAOImp {
 
 	public AuditTransaction getAuditTransactionbySchedule(int auditTransactionId) {
 		List<AuditTransaction> allAuditTransactions = sessionFactory.getCurrentSession().createQuery("from AuditTransaction where trans_schedule_id = "+auditTransactionId).list();
-
+        if(allAuditTransactions!= null &&allAuditTransactions.size()>0)
 		return allAuditTransactions.get(0);
+        else {
+        	return null;
+        }
 		
 	}
 	

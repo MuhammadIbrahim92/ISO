@@ -10,16 +10,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
+
 @Entity
-@Table(name = "isoUsers")
+@Table(name = "ncr")
 public class Ncr implements Serializable{
+	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer ID;
 
 	@Column
 	private int ncr_dept_id;
-
+	
+	@Column(updatable=false, insertable=false)
+    @Formula("(Select la.audit_area_name from audit_area la Where la.audit_area_id=ncr_dept_id)")
+	private String ncr_dept_name;
+	
+	@Column(updatable=false, insertable=false)
+	private String Operation ;
 	
 //	@OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "SCHEDULE_AUDITOR_ID", referencedColumnName = "User_ID")
@@ -38,10 +48,10 @@ public class Ncr implements Serializable{
 	private String ncr_desc;
 	
 	@Column
-	private int ncr_initiator;
+	private String ncr_initiator;
 	
 	@Column
-	private Date ncr_root_cause;
+	private String ncr_root_cause;
 	
 	@Column
 	private String ncr_corrective_action;
@@ -56,8 +66,33 @@ public class Ncr implements Serializable{
 	private Date ncr_verfication_date;
 	
 	@Column
+	private String ncr_status;
+	
+	@Column
 	private int ncr_schedule_id;
+	public String getNcr_dept_name() {
+		return ncr_dept_name;
+	}
 
+	public void setNcr_dept_name(String ncr_dept_name) {
+		this.ncr_dept_name = ncr_dept_name;
+	}
+
+	public String getOperation() {
+		return Operation;
+	}
+
+	public void setOperation(String operation) {
+		Operation = operation;
+	}
+
+	public String getNcr_status() {
+		return ncr_status;
+	}
+
+	public void setNcr_status(String ncr_status) {
+		this.ncr_status = ncr_status;
+	}
 	public Integer getID() {
 		return ID;
 	}
@@ -106,19 +141,19 @@ public class Ncr implements Serializable{
 		this.ncr_desc = ncr_desc;
 	}
 
-	public int getNcr_initiator() {
+	public String getNcr_initiator() {
 		return ncr_initiator;
 	}
 
-	public void setNcr_initiator(int ncr_initiator) {
+	public void setNcr_initiator(String ncr_initiator) {
 		this.ncr_initiator = ncr_initiator;
 	}
 
-	public Date getNcr_root_cause() {
+	public String getNcr_root_cause() {
 		return ncr_root_cause;
 	}
 
-	public void setNcr_root_cause(Date ncr_root_cause) {
+	public void setNcr_root_cause(String ncr_root_cause) {
 		this.ncr_root_cause = ncr_root_cause;
 	}
 

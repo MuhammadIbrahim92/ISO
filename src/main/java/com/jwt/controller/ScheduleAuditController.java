@@ -27,11 +27,13 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 import com.jwt.model.AuditArea;
 import com.jwt.model.AuditTransaction;
 import com.jwt.model.Employee;
+import com.jwt.model.Ncr;
 import com.jwt.model.ScheduleAudit;
 import com.jwt.model.User;
 import com.jwt.service.AuditAreaServiceImpl;
 import com.jwt.service.AuditTransServiceImpl;
 import com.jwt.service.EmployeeService;
+import com.jwt.service.NcrServiceImpl;
 import com.jwt.service.ScheduleAuditServiceImpl;
 import com.jwt.service.UserServiceImpl;
 
@@ -58,7 +60,9 @@ public class ScheduleAuditController {
 	private UserServiceImpl userService;
 	@Autowired
 	private AuditAreaServiceImpl auditAreaService;
-	
+	@Autowired
+	private NcrServiceImpl ncrServiceImpl;
+
 	@Autowired
 	private EmployeeService employeeService;
 
@@ -80,13 +84,17 @@ public class ScheduleAuditController {
 			model.addObject("trans", tran);
 		}
 		else {
-		AuditTransaction tran=new AuditTransaction();
+			
+			AuditTransaction tran= auditTransService.getAuditTransactionBySchedule(scheduleId);
+			if(tran==null) {
+		 tran=new AuditTransaction();
 		tran.setTrans_process_name("internal Audit");
 		tran.setTrans_auditee_id(schedule.getSCHEDULE_AUDITOR_ID());
 		tran.setTrans_date(schedule.getSCHEDULE_DATE());
 		tran.setTrans_schedule_id(scheduleId);
 		tran.setTrans_createdby_id(username);
 		tran.setTrans_id(0);
+			}
 		model.addObject("trans", tran);
 		}
 		
@@ -117,22 +125,67 @@ public class ScheduleAuditController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		
-		
-		
-		if (Audtrans.getTrans_id() == 0) { // if employee id is 0 then creating the
+		System.out.println("Operation is "+ Audtrans.getOperation());
+		if(Audtrans.getTrans_id() == 0 &&Audtrans.getOperation().equalsIgnoreCase("Save")) {
+			Audtrans.setTrans_audit_status("NEW");
+			auditTransService.addAuditTransaction(Audtrans);
+		}
+		if(Audtrans.getTrans_id() == 0 &&Audtrans.getOperation().equalsIgnoreCase("SUBMIT")) {
 			Audtrans.setTrans_audit_status("SUBMITTED");
-           auditTransService.addAuditTransaction(Audtrans);
-           int scheduleId = Audtrans.getTrans_schedule_id();
-   		ScheduleAudit schedule = scheduleAuditService.getSchedule(scheduleId);
-   	    schedule.setSCHEDULE_STATE("SUBMITTED");
-   		scheduleAuditService.updateSchedule(schedule);
-		} 
+	           auditTransService.addAuditTransaction(Audtrans);
+	           
+	           int scheduleId = Audtrans.getTrans_schedule_id();
+	   		ScheduleAudit schedule = scheduleAuditService.getSchedule(scheduleId);
+	   	    schedule.setSCHEDULE_STATE("SUBMITTED");
+	   		scheduleAuditService.updateSchedule(schedule);
+		}
+		if(Audtrans.getTrans_id() > 0 &&Audtrans.getOperation().equalsIgnoreCase("Save")) {
+			Audtrans.setTrans_audit_status("NEW");
+			auditTransService.updateAuditTransaction(Audtrans);
+		}
+		if(Audtrans.getTrans_id() > 0 &&Audtrans.getOperation().equalsIgnoreCase("SUBMIT")) {
+			Audtrans.setTrans_audit_status("SUBMITTED");
+			auditTransService.updateAuditTransaction(Audtrans);
+	           
+	           int scheduleId = Audtrans.getTrans_schedule_id();
+	   		ScheduleAudit schedule = scheduleAuditService.getSchedule(scheduleId);
+	   	    schedule.setSCHEDULE_STATE("SUBMITTED");
+	   		scheduleAuditService.updateSchedule(schedule);
+		}
 				
 		return new ModelAndView("redirect:/allAcceptedSchedules");
 	}
 
 	
-	
+	@RequestMapping(value = "/NCR")
+	public ModelAndView listEmployee(ModelAndView model) throws IOException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		List<User> listUsers = userService.getAllUsers();
+		List<AuditArea> listAuditAreas = auditAreaService.getAllAuditAreas();
+		model.addObject("listUsers",listUsers );
+		model.addObject("listAuditAreas",listAuditAreas );
+		Ncr ncr = new Ncr();
+		ncr.setNcr_status("NEW");
+		ncr.setNcr_initiator(username);
+		model.addObject("schedule", ncr);
+			model.setViewName("NCR");
+		return model;
+	}
+	@RequestMapping(value = "/EditNCR")
+	public ModelAndView EditNcr(ModelAndView model,HttpServletRequest request) throws IOException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		List<User> listUsers = userService.getAllUsers();
+		List<AuditArea> listAuditAreas = auditAreaService.getAllAuditAreas();
+		model.addObject("listUsers",listUsers );
+		model.addObject("listAuditAreas",listAuditAreas );
+		int ncrId = Integer.parseInt(request.getParameter("id"));
+		Ncr ncr = ncrServiceImpl.getNcr(ncrId);
+		model.addObject("schedule", ncr);
+			model.setViewName("NCR");
+		return model;
+	}
 	
 	@RequestMapping(value = "/saveSchedule", method = RequestMethod.POST)
 	public ModelAndView saveSchedule(@ModelAttribute ScheduleAudit schedule) {
@@ -144,6 +197,8 @@ public class ScheduleAuditController {
             schedule.setSCHEDULE_ADMIN_ID(authentication.getName());
 			scheduleAuditService.addSchedule(schedule);
 		} else {
+            schedule.setSCHEDULE_STATE("NEW");
+            schedule.setSCHEDULE_ADMIN_ID(authentication.getName());
 			scheduleAuditService.updateSchedule(schedule);
 		}
 				
@@ -176,6 +231,35 @@ public class ScheduleAuditController {
 		return new ModelAndView("redirect:/allSchedules");
 	}
 
+	
+	
+	@RequestMapping(value = "/saveNCR", method = RequestMethod.POST)
+	public ModelAndView saveNCR(@ModelAttribute Ncr schedule) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+         System.out.println("Op is" +schedule.getOperation());
+		if (schedule.getID()==null|| schedule.getID() == 0) { // if employee id is 0 then creating the
+			schedule.setNcr_status("NEW");
+			 ncrServiceImpl.addNcr(schedule);
+			//scheduleAuditService.addSchedule(ncr);
+		} else  {
+                if(schedule.getOperation().equalsIgnoreCase("SAVE")) {
+                	ncrServiceImpl.addNcr(schedule);
+                }
+                else {
+                	schedule.setNcr_status("CLOSED");
+                    	ncrServiceImpl.addNcr(schedule);
+                    
+                }
+			//scheduleAuditService.updateSchedule(ncr);
+		}
+	
+	        
+
+		return new ModelAndView("redirect:/allNCRS");
+	}
+
+	
 	@RequestMapping(value = "/deleteSchedule", method = RequestMethod.GET)
 	public ModelAndView deleteSchedule(HttpServletRequest request) {
 		int scheduleId = Integer.parseInt(request.getParameter("id"));
@@ -282,6 +366,25 @@ public class ScheduleAuditController {
 		model.addObject("listSchedules", listSchedules);
 		// MAGED: create new page for all schedules like home page 
 		model.setViewName("allAcceptedSchedules");
+		return model;
+	}
+
+	
+	@RequestMapping(value = "/allNCRS", method = RequestMethod.GET)
+	public ModelAndView allNCRS(ModelAndView model,SecurityContextHolderAwareRequestWrapper requestWrapper) throws IOException {
+		List<Ncr> listNCR=null;
+		//if(requestWrapper.isUserInRole("ROLE_ADMIN")) {
+		listNCR = ncrServiceImpl.getAllNcrs();
+		//}
+	//	else {
+		//	 listSchedules = scheduleAuditService.getAllCurrentUser(requestWrapper.getUserPrincipal().getName());
+
+		//}
+        System.out.println("New One");
+        
+		model.addObject("listNCR", listNCR);
+		// MAGED: create new page for all schedules like home page 
+		model.setViewName("allNCRS");
 		return model;
 	}
 

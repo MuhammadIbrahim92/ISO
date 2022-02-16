@@ -317,7 +317,7 @@ nav.side-navbar.shrinked .sidebar-header .title {
                     </li>
 					<li><a href="#CRSDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list-alt" aria-hidden="true"></i>Non-conformities Actions</a>
                       <ul id="CRSDropdown" class="collapse list-unstyled ">
-                        <li><a href="NCR"><i class="fa fa-history"></i>CARs Log</a></li>
+                        <li><a href="allNCRS"><i class="fa fa-history"></i>CARs Log</a></li>
                         <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
                       </ul>
                     </li>

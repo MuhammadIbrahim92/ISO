@@ -33,16 +33,7 @@ public class EmployeeController {
 	@Autowired
 	private ScheduleAuditServiceImpl scheduleAuditService;
 	
-	@RequestMapping(value = "/NCR")
-	public ModelAndView listEmployee(ModelAndView model) throws IOException {
-		List<Employee> listEmployee = employeeService.getAllEmployees();
-		model.addObject("listEmployee", listEmployee);
-//		model.setViewName("home");
-//		model.setViewName("AuditPlan");
-//		model.setViewName("InternalAudit");
-		model.setViewName("NCR");
-		return model;
-	}
+	
 	@RequestMapping(value = "/AuditPlan")
 	public ModelAndView AuditPlan(ModelAndView model) throws IOException {
 		List<Employee> listEmployee = employeeService.getAllEmployees();
