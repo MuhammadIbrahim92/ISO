@@ -194,6 +194,32 @@ $(document).ready(function () {
 </body>
 <script>
   $(function (e) {
+	  var Ls=${listSchedulesJSON};
+	  var ls2=[];
+	  for(var i = 0; i < Ls.length; i++) {
+		    var obj = Ls[i];
+             
+             Ls[i]={  date: new Date(obj.date),
+                eventName: obj.eventName,
+                 className: obj.className,
+                onclick(e, data) {
+                      console.log(data.data);
+                      
+                      if(data.data.status=="ACCEPTED"||data.data.status=="SUBMITTED")
+                      window.location.replace("InternalAudit?id="+data.data.id);
+                      else
+                              window.location.replace("editSchedule?id="+data.data.id);
+
+                    },
+                   dateColor:obj.dateColor,
+                   data:obj.data
+                    };
+             
+	          }
+          
+		
+	  console.log(Ls);
+	  
     var calendar = $("#calendar").calendarGC({
       dayBegin: 0,
       prevIcon: '&#x3c;',
@@ -206,35 +232,7 @@ $(document).ready(function () {
         console.log("next");
         console.log(e)
       },
-      events: [
-        {
-          date: new Date("2022-02-07"),
-          eventName: "Holiday",
-          className: "badge bg-danger",
-          onclick(e, data) {
-            console.log(data);
-          },
-          dateColor: "red"
-        },
-        {
-          date: new Date("2022-02-07"),
-          eventName: "Holiday with wife",
-          className: "badge bg-danger",
-          onclick(e, data) {
-            console.log(data);
-          },
-          dateColor: "red"
-        },
-        {
-          date: new Date("2022-02-08"),
-          eventName: "Working day",
-          className: "badge bg-success",
-          onclick(e, data) {
-            console.log(data);
-          },
-          dateColor: "green"
-        }
-      ],
+      events: Ls,
       onclickDate: function (e, data) {
         console.log(e, data);
       }

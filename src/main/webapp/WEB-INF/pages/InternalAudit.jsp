@@ -46,6 +46,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake/browser.js"></script>
+
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
@@ -143,6 +145,18 @@ $(document).ready(function () {
 	  $('div.setup-panel div a.btn-primary').trigger('click');
 	});
 </script>
+  <script>
+  
+  function EXPORT_TO_PDF(){
+	  var ht=document.getElementById("HTMLReport").innerHTML;
+    var val = htmlToPdfmake(ht, {
+    	  tableAutoSize:true
+    });
+    var dd = {content:val};
+    pdfMake.createPdf(dd).download();
+  }
+  </script>
+
 <body>
 <jsp:include page="NavBar.jsp">
          <jsp:param name="param1" value="Dashboardli"/>
@@ -152,6 +166,80 @@ $(document).ready(function () {
          <jsp:param name="param1" value="InternalAuditli"/>
      </jsp:include>
 <div class="content-inner">
+
+
+<div style="display:none" id="HTMLReport">
+<p style="text-align:center">Internal Audit Report</p>
+
+
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px; border-collapse: collapse;">
+	<tbody>
+		<tr>
+			<td style="background-color:#ffcc99; width:144px">Report Created By</td>
+			<td style="width:344px">${schedule.SCHEDULE_AUDITOR_ID}</td>
+		</tr>
+		<tr>
+			<td style="background-color:#ffcc99; width:144px">Date</td>
+			<td style="width:344px">${schedule.SCHEDULE_DATE}</td>
+		</tr>
+		<tr>
+			<td style="background-color:#ffcc99; width:144px">Process Name</td>
+			<td style="width:344px">&nbsp; Internal Audit</td>
+		</tr>
+		<tr>
+			<td style="background-color:#ffcc99; width:144px">Auditee</td>
+			<td style="width:344px">${schedule.SCHEDULE_AUDITEE_ID}</td>
+		</tr>
+		<tr>
+			<td style="background-color:#ffcc99; width:144px">Audit Area</td>
+			<td style="width:344px">${schedule.SCHEDULE_AUDITAREA_NAME}</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+<p><span style="display:none">&nbsp;</span></p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:700px; border-collapse: collapse;">
+	<tbody>
+		<tr>
+			<td style="background-color:#ffcc99; width:700px"><strong>Executive Summary</strong></td>
+		</tr>
+		<tr>
+			<td style="width:700px">
+			
+			${trans.trans_executive_summery}</td>
+		</tr>
+		<tr>
+			<td style="background-color:#ffcc99; width:700px"><strong>Audit Findings :</strong><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td style="width:700px">
+			${trans.trans_audit_findings}</td>
+		</tr>
+		<tr>
+			<td style="background-color:#ffcc99; width:700px"><strong>Reviewed Records :</strong></td>
+		</tr>
+		<tr>
+			<td style="width:700px">
+			
+			${trans.trans_reviewed_records}</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<p>Internal Auditor Signature</p>
+
+<p>.......................</p>
+
+
+</div>
+
+
 <div class="card mb-4 wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
 
                 <!--Card content-->
@@ -164,11 +252,13 @@ $(document).ready(function () {
                          
                       </h4>
                     </form>
-                   
+                   <c:choose>
+             <c:when test="${schedule.SCHEDULE_STATE == 'SUBMITTED'}">
                    <button class="btn btn-info" 
                   
-                   style="margin-left: 70%" > Export PDF</button>
-				   
+                   style="margin-left: 70%" onclick="EXPORT_TO_PDF()"> Export PDF</button>
+				   </c:when>
+				   </c:choose>
                    
                    
 
@@ -291,19 +381,23 @@ $(document).ready(function () {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+        <form:form role="form" action="saveNCR" method="post" modelAttribute="NCR">
+      
       <div class="modal-body">
        <div class="form-row">
           
           <div class="col">
           <div class="form-group">
             <label class="control-label">Department</label>
-            <input  maxlength="100" type="text" class="form-control" placeholder="Department" readonly="true" value=${schedule.SCHEDULE_AUDITAREA_NAME} />
+            <input  maxlength="100" type="text" class="form-control" placeholder="Department" readonly="true" value="${schedule.SCHEDULE_AUDITAREA_NAME}" />
+          <form:input  class="form-control " type="hidden" path="ncr_dept_id" value="${schedule.SCHEDULE_AUDITAREA}" />
           </div>
           </div>
           <div class="col">
           <div class="form-group">
             <label class="control-label">Date  </label>
-            <input maxlength="100" type="Date" class="form-control" placeholder="Date" />
+                        <form:input maxlength="100" type="date" class="form-control" placeholder="Date" path="ncr_date" />
+            
           </div>
           </div>
           </div>
@@ -311,78 +405,41 @@ $(document).ready(function () {
           <div class="col">
           <div class="form-group">
             <label class="control-label">Other Source</label>
-            <input maxlength="100" type="text" required="required" class="form-control" placeholder="this can be used for data analysis" />
+            <form:input maxlength="100" type="text" path="ncr_source" required="required" class="form-control" placeholder="this can be used for data analysis" />
           </div>
           </div>
           <div class="col">
           <div class="form-group">
             <label class="control-label">Procedure ref</label>
-        <input maxlength="100" type="text" required="required" class="form-control" placeholder="(for audit findings only or if applicable)" />
+        <form:input maxlength="100" type="text" path="ncr_other" required="required" class="form-control" placeholder="(for audit findings only or if applicable)" />
           </div>
           </div>
           
       
     </div>
     
-  </form>
+
   
   <div class="card">
     <div class="card-header text-white bg-info">
     <a class="text-white" data-toggle="collapse" href="#ExcutiveBody" aria-expanded="false" aria-controls="ExcutiveBody">
     NONCONFORMANCE
-  </a>
+  </a>1111111
     </div>
     <div class="card-body" id="ExcutiveBody">
-    <textarea required="required" class="form-control" placeholder="Describe the nonconfirmity..." ></textarea>
+    <form:textarea required="required" path="ncr_desc" class="form-control" placeholder="Describe the nonconfirmity..." ></form:textarea>
    <div class="form-group col-md-6">
             <label class="control-label">Initiator :</label>
-        <input maxlength="100" type="text" required="required" class="form-control" placeholder="(can be auditor or system admin)" readonly="true" value="${pageContext.request.userPrincipal.name}"/>
+                <form:input maxlength="100" path="ncr_initiator" type="text" readonly="true" class="form-control" placeholder="(can be auditor or system admin)" value="${pageContext.request.userPrincipal.name}" />
+                          <form:input maxlength="100" type="hidden" path="ncr_schedule_id" required="required" class="form-control" value="${schedule.SCHEDULE_ID}"   />
+        
           </div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-header text-white bg-info">
-     <a class="text-white" data-toggle="collapse" href="#Findings" >
-    Root CAUSE (to be completed by the concerned Head of Department)
-  </a>
-    </div>
-    <div class="card-body" id="Findings">
-    <textarea required="required" class="form-control" placeholder="Describe the root cause of the nonconfirmity..." ></textarea>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header text-white bg-info">
-       <a class="text-white" data-toggle="collapse" href="#Reviewed" aria-expanded="false" aria-controls="Reviewed">
-    CORRECTIVE ACTION (to be completed by the concerned HoD)
-  </a>
-     </div>
-    <div class="card-body" id="Reviewed">
-    <textarea required="required" class="form-control" placeholder="(Describe the activity to be carried-out to correct the nonconfirmity)" ></textarea>
-    <div class="form-group col-md-6">
-            <label class="control-label">Agreed Completion Date :</label>
-        <input maxlength="100" type="Date" required="required" class="form-control" placeholder="Agreed Completion Date" />
-          </div>
-    </div>
-  </div>
-  
-    <div class="card">
-    <div class="card-header text-white bg-info">
-       <a class="text-white" data-toggle="collapse" href="#verification" aria-expanded="false" aria-controls="verification">
-    VERIFICATION (to be completed by the system admin)
-  </a>
-     </div>
-    <div class="card-body" id="verification">
-    <label class="control-label">Verification of closure of corrective actions</label>
-    <textarea required="required" class="form-control" placeholder="NOTES..." ></textarea>
-    <div class="form-group col-md-6">
-            <label class="control-label">Date :</label>
-        <input maxlength="100" type="Date" required="required" class="form-control" placeholder="Date" />
-          </div>
-    </div>
-  </div>
-</div>
+             <form:input class="btn btn-info" path="Operation" type="submit"  value="Save"/>
   
   
+    </form:form >
   
       </div>
     </div>

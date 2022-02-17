@@ -1,6 +1,7 @@
 package com.jwt.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -8,6 +9,9 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.jboss.logging.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -97,9 +101,11 @@ public class ScheduleAuditController {
 			}
 		model.addObject("trans", tran);
 		}
-		
+	   Ncr nc1=new Ncr();
+	   nc1.setNcr_status("NEW");
+	   model.addObject("NCR", nc1);
 		model.addObject("schedule", schedule);
-		
+	 
 //		model.setViewName("AuditPlan");
     	model.setViewName("InternalAudit");
 	//	model.setViewName("NCR");
@@ -239,11 +245,15 @@ public class ScheduleAuditController {
 		String username = authentication.getName();
          System.out.println("Op is" +schedule.getOperation());
 		if (schedule.getID()==null|| schedule.getID() == 0) { // if employee id is 0 then creating the
-			schedule.setNcr_status("NEW");
+			schedule.setNcr_status("Under Investigation");
 			 ncrServiceImpl.addNcr(schedule);
 			//scheduleAuditService.addSchedule(ncr);
 		} else  {
                 if(schedule.getOperation().equalsIgnoreCase("SAVE")) {
+                	ncrServiceImpl.addNcr(schedule);
+                }
+                else if(schedule.getOperation().equalsIgnoreCase("SOLVED")) {
+                	schedule.setNcr_status("Under Revision");
                 	ncrServiceImpl.addNcr(schedule);
                 }
                 else {
@@ -343,10 +353,39 @@ public class ScheduleAuditController {
 			 listSchedules = scheduleAuditService.getAllCurrentUser(requestWrapper.getUserPrincipal().getName());
 
 		}
-        System.out.println("New One");
+       JSONArray js=new JSONArray();
+       for(int i=0;i<listSchedules.size();i++) {
+       JSONObject tmp=new JSONObject();
+       try {
+		tmp.put("date", listSchedules.get(i).getSCHEDULE_DATE());
+		tmp.put("eventName", "Internal Audit For "+listSchedules.get(i).getSCHEDULE_AUDITAREA_NAME()+" Department");
+		String ClassName="badge bg-success";
+		String Badge="green";
+
+		if(listSchedules.get(i).getSCHEDULE_DATE().before(new Date())&&!listSchedules.get(i).getSCHEDULE_STATE().equalsIgnoreCase("SUBMITTED")) {
+			 ClassName="badge bg-danger";
+			 Badge="red";
+		}
+		tmp.put("className", ClassName);
+		tmp.put("dateColor", Badge);
+		JSONObject tmp2=new JSONObject();
+		tmp2.put("id", listSchedules.get(i).getSCHEDULE_ID());
+		tmp2.put("status", listSchedules.get(i).getSCHEDULE_STATE());
+		tmp.put("data", tmp2);
+		 js.put(tmp);
+
+	} catch (JSONException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+       }
+       
+		
 		model.addObject("listSchedules", listSchedules);
-		// MAGED: create new page for all schedules like home page 
-		model.setViewName("Calendar");
+		model.addObject("listSchedulesJSON", js);
+       
+       
+       model.setViewName("Calendar");
 		return model;
 	}
 
