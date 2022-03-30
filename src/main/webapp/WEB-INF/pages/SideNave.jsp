@@ -293,7 +293,7 @@ nav.side-navbar.shrinked .sidebar-header .title {
           <span class="heading">Main</span>
            <ul class="list-unstyled">
                     <li id="Dashboardli"><a href="Dashboard"> <i class="fa fa-area-chart"></i><fmt:message key="label.Dashboard" /></a></li>
-					<li><a href="#ObjectiveDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-line-chart" aria-hidden="true"></i><fmt:message key="label.ObjectiveManager" /></a>
+					<li id="ObjectiveManagerli"><a href="#ObjectiveDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-line-chart" aria-hidden="true"></i><fmt:message key="label.ObjectiveManager" /></a>
                       <ul id="ObjectiveDropdown" class="collapse list-unstyled ">
                         <li><li ><a href="ObjectiveManagerPlanning"><i class="fa fa-tasks"></i><fmt:message key="label.Planning" /></a></li>
                         <li><a href="#"><i class="fa fa-bar-chart"></i><fmt:message key="label.Reports" /></a></li>

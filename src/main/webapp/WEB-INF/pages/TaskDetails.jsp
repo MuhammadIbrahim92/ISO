@@ -151,11 +151,11 @@ $(document).ready(function () {
 </script>
 <body>
 <jsp:include page="NavBar.jsp">
-         <jsp:param name="param1" value="Dashboardli"/>
+         <jsp:param name="param1" value="ObjectiveManagerli"/>
      </jsp:include>
      <div class="page-content d-flex align-items-stretch"> 
        <jsp:include page="SideNave.jsp">
-         <jsp:param name="param1" value="AuditAdminli"/>
+         <jsp:param name="param1" value="ObjectiveManagerli"/>
      </jsp:include>
 <div class="content-inner">
 <div class="card mb-4 wow fadeIn" style="visibility: visible; animation-name: fadeIn;">

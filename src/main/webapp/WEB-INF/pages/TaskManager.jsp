@@ -46,11 +46,11 @@
   </head>
 <body>
 <jsp:include page="NavBar.jsp">
-         <jsp:param name="param1" value="Dashboardli"/>
+         <jsp:param name="param1" value="ObjectiveManagerli"/>
      </jsp:include>
 <div class="page-content d-flex align-items-stretch"> 
    <jsp:include page="SideNave.jsp">
-         <jsp:param name="param1" value="Dashboardli"/>
+         <jsp:param name="param1" value="ObjectiveManagerli"/>
      </jsp:include>
 <div class="content-inner">
 
