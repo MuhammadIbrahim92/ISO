@@ -9,6 +9,7 @@ public interface CommentDAO {
 	public void addComment(Comment employee);
 
 	public List<Comment> getAllComment(Employee emp);
+	public List<Comment> getAllCommentByTask(int TaskID);
 
 	public void deleteComment(Integer commentId);
 

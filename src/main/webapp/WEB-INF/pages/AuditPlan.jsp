@@ -2,7 +2,10 @@
     pageEncoding="ISO-8859-1"%>
    <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+       <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
+    
     <%@page session="true"%>
+    <% response.setCharacterEncoding("UTF-8");%>
     <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
     <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
     
@@ -10,7 +13,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>New Audit Schedule</title>
+<title><fmt:message key="label.NewAuditSchedule" /></title>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
@@ -163,7 +166,7 @@ $(document).ready(function () {
                       <form class="d-flex justify-content-center">
                   
                       <h4 class="mb-2 mb-sm-0 pt-1">
-                         <span> <i class="fa fa-calendar"></i> &nbsp Internal Audit Schedule</span>
+                         <span> <i class="fa fa-calendar"></i> &nbsp <fmt:message key="label.InternalAuditSchedule" /></span>
                          
                       </h4>
                     </form>
@@ -185,7 +188,7 @@ $(document).ready(function () {
         <div class="col-md-6">
           
           <div class="form-group">
-            <label >Audit Area</label>
+            <label ><fmt:message key="label.AuditArea" /></label>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
             
 <c:choose> 
@@ -204,7 +207,7 @@ $(document).ready(function () {
           
           </div>
           <div class="form-group">
-            <label class="control-label">Auditor  </label>
+            <label class="control-label"><fmt:message key="label.Auditor" />  </label>
              <sec:authorize access="hasRole('ROLE_ADMIN')">
            
             <c:choose> 
@@ -224,7 +227,7 @@ $(document).ready(function () {
       </sec:authorize>    
           </div>
           <div class="form-group">
-            <label class="control-label">Auditee</label>
+            <label class="control-label"><fmt:message key="label.Auditee" /> </label>
              <sec:authorize access="hasRole('ROLE_ADMIN')">
            <c:choose> 
   <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0 || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
@@ -243,7 +246,7 @@ $(document).ready(function () {
   </sec:authorize>
           </div>
           <div class="form-group">
-            <label class="control-label">Date</label>
+            <label class="control-label"><fmt:message key="label.Date" /></label>
              <sec:authorize access="hasRole('ROLE_ADMIN')">
                     <c:choose> 
   <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0 || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
@@ -272,14 +275,14 @@ $(document).ready(function () {
           </sec:authorize>
           <c:choose>
          <c:when test="${schedule.SCHEDULE_STATE == 'NEW' && schedule.SCHEDULE_AUDITOR_ID==pageContext.request.userPrincipal.name }">
-          <a class="btn btn-success" href="AcceptAuditor?id=${schedule.SCHEDULE_ID}" >Accept Schedule</a>
-           <a class="btn btn-danger" href="RejectAuditor?id=${schedule.SCHEDULE_ID}" >Reject Schedule</a>
+          <a class="btn btn-success" href="AcceptAuditor?id=${schedule.SCHEDULE_ID}" ><fmt:message key="label.AcceptSchedule" /></a>
+           <a class="btn btn-danger" href="RejectAuditor?id=${schedule.SCHEDULE_ID}" ><fmt:message key="label.RejectSchedule" /></a>
           </c:when>
          </c:choose>
    <c:choose>
          <c:when test="${schedule.SCHEDULE_STATE == 'AUDITOR_ACCEPTED' && schedule.SCHEDULE_AUDITEE_ID==pageContext.request.userPrincipal.name }">
-          <a class="btn btn-success" href="AcceptAuditee?id=${schedule.SCHEDULE_ID}" >Accept Schedule</a>
-           <a class="btn btn-danger" href="RejectAuditee?id=${schedule.SCHEDULE_ID}" >Reject Schedule</a>
+          <a class="btn btn-success" href="AcceptAuditee?id=${schedule.SCHEDULE_ID}" ><fmt:message key="label.AcceptSchedule" /></a>
+           <a class="btn btn-danger" href="RejectAuditee?id=${schedule.SCHEDULE_ID}" ><fmt:message key="label.RejectSchedule" /></a>
           </c:when>
          </c:choose>
         </div>

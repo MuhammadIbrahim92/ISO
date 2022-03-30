@@ -2,7 +2,10 @@
     pageEncoding="ISO-8859-1"%>
     <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+     <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
+    
     <%@page session="true"%>
+    <% response.setCharacterEncoding("UTF-8");%>
     
 <!DOCTYPE html>
 <html>
@@ -276,7 +279,7 @@ nav.side-navbar.shrinked .sidebar-header .title {
 
 </style>                
 </head>
-<body>
+<body dir="rtl">
   <nav class="side-navbar">
           <!-- Sidebar Header-->
           <div class="sidebar-header d-flex align-items-center">
@@ -289,36 +292,36 @@ nav.side-navbar.shrinked .sidebar-header .title {
           <!-- Sidebar Navidation Menus-->
           <span class="heading">Main</span>
            <ul class="list-unstyled">
-                    <li id="Dashboardli"><a href="Dashboard"> <i class="fa fa-area-chart"></i>Dashboard</a></li>
-					<li><a href="#ObjectiveDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-line-chart" aria-hidden="true"></i>Objective Manager</a>
+                    <li id="Dashboardli"><a href="Dashboard"> <i class="fa fa-area-chart"></i><fmt:message key="label.Dashboard" /></a></li>
+					<li><a href="#ObjectiveDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-line-chart" aria-hidden="true"></i><fmt:message key="label.ObjectiveManager" /></a>
                       <ul id="ObjectiveDropdown" class="collapse list-unstyled ">
-                        <li><li ><a href="allSchedules"><i class="fa fa-tasks"></i>Planning</a></li>
-                        <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
+                        <li><li ><a href="ObjectiveManagerPlanning"><i class="fa fa-tasks"></i><fmt:message key="label.Planning" /></a></li>
+                        <li><a href="#"><i class="fa fa-bar-chart"></i><fmt:message key="label.Reports" /></a></li>
                       </ul>
                     </li>
-					<li><a href="#ActionDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list"></i>Action Manager</a>
+					<li><a href="#ActionDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list"></i><fmt:message key="label.ActionManager" /></a>
                       <ul id="ActionDropdown" class="collapse list-unstyled ">
-                        <li><a href="AuditPlan"><i class="fa fa-tasks"></i>Planning</a></li>
-                        <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
+                        <li><a href="AuditPlan"><i class="fa fa-tasks"></i><fmt:message key="label.Planning" /></a></li>
+                        <li><a href="#"><i class="fa fa-bar-chart"></i><fmt:message key="label.Reports" /></a></li>
                       </ul>
                     </li>
-					<li><a href="#InternalDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-clipboard"></i></i>Internal Audit</a>
+					<li><a href="#InternalDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-clipboard"></i></i><fmt:message key="label.InternalAudit" /></a>
                       <ul id="InternalDropdown" class="collapse list-unstyled ">
-                        <li id="AuditAdminli"><a href="allSchedules"><i class="fa fa-tasks"></i>Planning</a></li>
-                        <li  id="AuditAdminli2"><a href="allSchedulesCal"><i class="fa fa-calendar"></i>internal Audit Calendar</a></li>
-                        <li id="AuditAdminli3"><a href="allAcceptedSchedules"><i class="fa fa-bar-chart"></i>Reports</a></li>
+                        <li id="AuditAdminli"><a href="allSchedules"><i class="fa fa-tasks"></i><fmt:message key="label.Planning" /></a></li>
+                        <li  id="AuditAdminli2"><a href="allSchedulesCal"><i class="fa fa-calendar"></i><fmt:message key="label.internalAuditCalendar" /></a></li>
+                        <li id="AuditAdminli3"><a href="allAcceptedSchedules"><i class="fa fa-bar-chart"></i><fmt:message key="label.Reports" /></a></li>
                       </ul>
                     </li>
-					<li><a href="#MeetingDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-briefcase" aria-hidden="true"></i>Management Review</a>
+					<li><a href="#MeetingDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-briefcase" aria-hidden="true"></i><fmt:message key="label.ManagementReview" /></a>
                       <ul id="MeetingDropdown" class="collapse list-unstyled ">
-                        <li><a href="#"><i class="fa fa-handshake-o" aria-hidden="true"></i>Planning</a></li>
-                        <li><a href="#"><i class="fa fa-bar-chart"></i>Previous Meetings reports</a></li>
+                        <li><a href="#"><i class="fa fa-handshake-o" aria-hidden="true"></i><fmt:message key="label.Planning" /></a></li>
+                        <li><a href="#"><i class="fa fa-bar-chart"></i><fmt:message key="label.PreviousMeetingsreports" /></a></li>
                       </ul>
                     </li>
-					<li><a href="#CRSDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list-alt" aria-hidden="true"></i>Non-conformities Actions</a>
+					<li><a href="#CRSDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list-alt" aria-hidden="true"></i><fmt:message key="label.Non-conformitiesActions" /></a>
                       <ul id="CRSDropdown" class="collapse list-unstyled ">
-                        <li><a href="allNCRS"><i class="fa fa-history"></i>CARs Log</a></li>
-                        <li><a href="#"><i class="fa fa-bar-chart"></i>Reports</a></li>
+                        <li><a href="allNCRS"><i class="fa fa-history"></i><fmt:message key="label.CARsLog" /></a></li>
+                        <li><a href="#"><i class="fa fa-bar-chart"></i><fmt:message key="label.Reports" />Reports</a></li>
                       </ul>
                     </li>
 					 <!-- Sidebar Navidation Menus

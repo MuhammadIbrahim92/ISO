@@ -44,4 +44,10 @@ public class CommentDAOImpl  implements CommentDAO{
 		return (Comment) sessionFactory.getCurrentSession().get(Comment.class, commentid);
 	}
 
+	@Override
+	public List<Comment> getAllCommentByTask(int TaskID) {
+		return sessionFactory.getCurrentSession().createQuery("from Comment c where c.TICKET_ID="+TaskID).list();
+
+	}
+
 }

@@ -9,7 +9,7 @@ public interface CommentService {
 	public void addComment(Comment employee);
 
 	public List<Comment> getAllComment(Employee emp);
-
+	public List<Comment> getAllCommentByTask(int TaskId);
 	public void deleteComment(Integer commentId);
 
 

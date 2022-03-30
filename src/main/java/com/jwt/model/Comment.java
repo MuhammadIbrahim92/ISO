@@ -24,6 +24,14 @@ public class Comment  implements Serializable{
 	private String COMMENT_TIME;
 	@Column
 	private int TICKET_ID;
+	@Column
+	private String commented_by;
+	public String getCommented_by() {
+		return commented_by;
+	}
+	public void setCommented_by(String commented_by) {
+		this.commented_by = commented_by;
+	}
 	public int getID() {
 		return ID;
 	}

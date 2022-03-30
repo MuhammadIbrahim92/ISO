@@ -28,6 +28,8 @@ public class CommentServiceImpl  implements CommentService{
 		return commentDAO.getAllComment(emp);
 	}
 
+	
+	
 	@Override
 	public void deleteComment(Integer commentId) {
       commentDAO.deleteComment(commentId);		
@@ -37,6 +39,12 @@ public class CommentServiceImpl  implements CommentService{
 	public Comment getComment(int commentid) {
 		// TODO Auto-generated method stub
 		return commentDAO.getComment(commentid);
+	}
+
+	@Override
+	public List<Comment> getAllCommentByTask(int TaskId) {
+		// TODO Auto-generated method stub
+		return commentDAO.getAllCommentByTask(TaskId);
 	}
 
 }

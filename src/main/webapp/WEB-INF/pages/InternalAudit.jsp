@@ -2,7 +2,10 @@
     pageEncoding="ISO-8859-1"%>
     <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+       <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
+    
     <%@page session="true"%>
+    <% response.setCharacterEncoding("UTF-8");%>
     <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
     <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
     
@@ -10,7 +13,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Internal Audit</title>
+<title><fmt:message key="label.InternalAudit" /></title>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
@@ -169,30 +172,30 @@ $(document).ready(function () {
 
 
 <div style="display:none" id="HTMLReport">
-<p style="text-align:center">Internal Audit Report</p>
+<p style="text-align:center"><fmt:message key="label.InternalAuditReport" /></p>
 
 
 
 <table border="1" cellpadding="1" cellspacing="1" style="width:500px; border-collapse: collapse;">
 	<tbody>
 		<tr>
-			<td style="background-color:#ffcc99; width:144px">Report Created By</td>
+			<td style="background-color:#ffcc99; width:144px"><fmt:message key="label.ReportCreatedBy" /></td>
 			<td style="width:344px">${schedule.SCHEDULE_AUDITOR_ID}</td>
 		</tr>
 		<tr>
-			<td style="background-color:#ffcc99; width:144px">Date</td>
+			<td style="background-color:#ffcc99; width:144px"><fmt:message key="label.Date" /></td>
 			<td style="width:344px">${schedule.SCHEDULE_DATE}</td>
 		</tr>
 		<tr>
-			<td style="background-color:#ffcc99; width:144px">Process Name</td>
-			<td style="width:344px">&nbsp; Internal Audit</td>
+			<td style="background-color:#ffcc99; width:144px"><fmt:message key="label.Process Name" /></td>
+			<td style="width:344px">&nbsp; <fmt:message key="label.InternalAudit" /></td>
 		</tr>
 		<tr>
-			<td style="background-color:#ffcc99; width:144px">Auditee</td>
+			<td style="background-color:#ffcc99; width:144px"><fmt:message key="label.Auditee" /></td>
 			<td style="width:344px">${schedule.SCHEDULE_AUDITEE_ID}</td>
 		</tr>
 		<tr>
-			<td style="background-color:#ffcc99; width:144px">Audit Area</td>
+			<td style="background-color:#ffcc99; width:144px"><fmt:message key="label.AuditArea" /></td>
 			<td style="width:344px">${schedule.SCHEDULE_AUDITAREA_NAME}</td>
 		</tr>
 	</tbody>
@@ -248,7 +251,7 @@ $(document).ready(function () {
                       <form class="d-flex justify-content-center">
                      <img alt="" src="resources/img/Icon.png" />
                       <h4 class="mb-2 mb-sm-0 pt-1">
-                         <span> &nbsp Internal Audit Report</span>
+                         <span> &nbsp <fmt:message key="label.InternalAuditReport" /></span>
                          
                       </h4>
                     </form>
@@ -256,7 +259,7 @@ $(document).ready(function () {
              <c:when test="${schedule.SCHEDULE_STATE == 'SUBMITTED'}">
                    <button class="btn btn-info" 
                   
-                   style="margin-left: 70%" onclick="EXPORT_TO_PDF()"> Export PDF</button>
+                   style="margin-left: 70%" onclick="EXPORT_TO_PDF()"> <fmt:message key="label.ExportPDF" /></button>
 				   </c:when>
 				   </c:choose>
                    
@@ -274,28 +277,122 @@ $(document).ready(function () {
     
           
           <div class="form-group">
-            <label class="control-label">Report Created by</label>
+            <label class="control-label"><fmt:message key="label.ReportCreatedby" /></label>
             <input  maxlength="100" type="text" class="form-control" placeholder="Report Created by" readonly="true" value="${pageContext.request.userPrincipal.name}"  />
           </div>
 
           
           <div class="form-group">
-            <label >Audit Area</label>
+            <label ><fmt:message key="label.AuditArea" /></label>
           <form:select  class="form-control " path="SCHEDULE_AUDITAREA" items="${listAuditAreas}" itemValue="audit_area_id" itemLabel="aUDIT_AREA_NAME" readonly="readonly"/>          
           </div>
           <div class="form-group">
-            <label class="control-label">Auditor  </label>
+            <label class="control-label"><fmt:message key="label.Auditor" />  </label>
                <form:select  class="form-control " path="SCHEDULE_AUDITOR_ID" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME" readonly="readonly"/> 
             </div>
           <div class="form-group">
-            <label class="control-label">Auditee</label>
+            <label class="control-label"><fmt:message key="label.Auditee" /> </label>
             <form:select  class="form-control " path="SCHEDULE_AUDITEE_ID" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME" readonly="readonly"/>
           </div>
           <div class="form-group">
-            <label class="control-label">Date</label>
+            <label class="control-label"><fmt:message key="label.Date" /></label>
           <form:input maxlength="100" type="Date" path="SCHEDULE_DATE" required="required" class="form-control" placeholder="Enter The Date" readonly="true" />
            </div>
   </form:form>
+   <div class="card">
+    <div class="card-header text-white bg-info">
+    <a class="text-white" data-toggle="collapse" href="#CheckPoints" aria-expanded="false" aria-controls="CheckPoints">
+    <fmt:message key="label.CheckPoints" />
+  </a>
+    </div>
+      <div class="card-body" id="CheckPoints">
+    <a   data-toggle="modal" data-target=".bd-example-modal-sm" <c:if test="${schedule.SCHEDULE_STATE == 'SUBMITTED'}"> hidden </c:if> >      
+  <i class="fa fa-plus" ></i>  <fmt:message key="label.addNewCheckPoint" /> </a>
+<form:form method="post" action="saveallChecks" modelAttribute="checkList">
+
+  
+   <table class="table table-hover">
+  <thead class="black white-text">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col"><fmt:message key="label.CheckPointQS" /></th>
+      <th scope="col"><fmt:message key="label.Result" /> </th>
+      <th scope="col"><fmt:message key="label.Notes" /> </th>
+    </tr>
+  </thead>
+  <tbody>
+  <c:forEach var="Check" items="${checkList.lstCheckpoints}" varStatus="status">
+    <tr>
+      <th scope="row">${status.count}</th>
+      <td>${Check.QS}</td>
+      <td><select  name="lstCheckpoints[${status.index}].RESULT" value="${Check.RESULT}" class="form-control "  readonly="${schedule.SCHEDULE_STATE == 'SUBMITTED'}"> 
+         <option value=""></option>
+          <option value="YES" <c:if test="${Check.RESULT == 'YES'}"> selected </c:if>><fmt:message key="label.YES" /></option>
+          <option value="NO" <c:if test="${Check.RESULT == 'NO'}"> selected </c:if>><fmt:message key="label.NO" /></option>
+      </select>
+      </td>
+      <td> <textarea  name="lstCheckpoints[${status.index}].NOTES" readonly="${schedule.SCHEDULE_STATE == 'SUBMITTED'}" required="required" value="${Check.NOTES}" class="form-control" placeholder="Notes" 
+    >${Check.NOTES}</textarea>
+          
+          <input type="hidden" name="lstCheckpoints[${status.index}].id" value="${Check.id}">
+                    <input type="hidden" name="lstCheckpoints[${status.index}].QS" value="${Check.QS}">
+                    <input type="hidden" name="lstCheckpoints[${status.index}].audit_id" value="${Check.audit_id}">
+          
+    </td>
+    </tr>
+  
+  </c:forEach>
+  
+     </tbody>
+</table>
+<button type="submit" class="btn btn-primary" <c:if test="${schedule.SCHEDULE_STATE == 'SUBMITTED'}"> hidden </c:if>>
+  <i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+</button>
+</form:form>   
+    </div>
+  </div>
+  
+<!-- PArtis Form  -->
+
+   <div class="card">
+    <div class="card-header text-white bg-info">
+    <a class="text-white" data-toggle="collapse" href="#partis" aria-expanded="false" aria-controls="partis">
+    Participants
+  </a>
+    </div>
+    <div class="card-body" id="partis" >
+    <a   data-toggle="modal" data-target=".bd-example-modal-m" <c:if test="${schedule.SCHEDULE_STATE == 'SUBMITTED'}"> hidden </c:if> >      
+  <i class="fa fa-plus" ></i> <fmt:message key="label.addNewParticipants" /> </a>
+<form:form method="post" action="saveallChecks" modelAttribute="checkList">
+
+   <table class="table table-hover">
+  <thead class="black white-text">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col"><fmt:message key="label.ParticipantName" /></th>
+    </tr>
+  </thead>
+  <tbody>
+  <c:forEach var="Check" items="${Partis.lstParticipants}" varStatus="status">
+    <tr>
+      <th scope="row">${status.count}</th>
+      <td>${Check.participant_name}
+      <input type="hidden" name="lstParticipants[${status.index}].audit_id" value="${Check.audit_id}">
+      </td>
+      
+         </tr>
+  
+  </c:forEach>
+  
+     </tbody>
+</table>
+
+</form:form>   
+    </div>
+  </div>
+
+<!-- End Partis -->
+  
   <form:form role="form" action="saveScheduleTrans" method="post" modelAttribute="trans">
             <form:input  maxlength="100" path="trans_createdby_id" type="hidden" class="form-control" placeholder="Report Created by" readonly="true" />
               <form:input  maxlength="100" path="trans_date" type="hidden" class="form-control" placeholder="Report Created by" readonly="true"   />
@@ -306,10 +403,11 @@ $(document).ready(function () {
 
 
 
+    
     <div class="card">
     <div class="card-header text-white bg-info">
     <a class="text-white" data-toggle="collapse" href="#ExcutiveBody" aria-expanded="false" aria-controls="ExcutiveBody">
-    Excutive Summary
+    <fmt:message key="label.ExcutiveSummary" />
   </a>
     </div>
     <div class="card-body" id="ExcutiveBody">
@@ -322,13 +420,14 @@ $(document).ready(function () {
     <div class="card-header text-white bg-info">
     
      <a class="text-white" data-toggle="collapse" href="#Findings"  >
-    Audit Findings
+       <fmt:message key="label.AuditFindings" />
+   
       </a>
         
        <c:choose>
              <c:when test="${schedule.SCHEDULE_STATE == 'ACCEPTED'}">
            <a class="text-white"  data-toggle="modal" data-target=".bd-example-modal-lg" style="margin-left: 70% !important;">      
-  <i class="fa fa-plus" ></i> add New NCR </a>
+  <i class="fa fa-plus" ></i> <fmt:message key="label.addNewNCR" /> </a>
             </c:when>
             </c:choose>
     
@@ -344,7 +443,7 @@ $(document).ready(function () {
   <div class="card">
     <div class="card-header text-white bg-info">
        <a class="text-white" data-toggle="collapse" href="#Reviewed" aria-expanded="false" aria-controls="Reviewed">
-    Reviewed Records
+    <fmt:message key="label.ReviewedRecords" />
   </a>
      </div>
     <div class="card-body" id="Reviewed">
@@ -353,6 +452,7 @@ $(document).ready(function () {
     ></form:textarea>
     </div>
   </div>
+  
   
 </div>
        <c:choose>
@@ -369,14 +469,103 @@ $(document).ready(function () {
   
      </form:form>
    
+   
+   
+   <div class="modal fade bd-example-modal-m" id="Paricipantwindow" tabindex="-1" role="dialog" aria-labelledby="myparticipantsWindow" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="height:100%">
+    <div class="modal-header">
+        <h5 class="modal-title" id="checkModal">    <fmt:message key="label.NewParticipants" /></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form:form role="form" action="saveParticipant" method="post" modelAttribute="NewPartis">
+      
+      <div class="modal-body">
+      <div class="form-row">
+          
+          <div class="col">
+          <div class="form-group">
+            <label class="control-label"><fmt:message key="label.ParticipantName" /></label>
+                         <form:select  class="form-control " path="participant_name" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME"/> 
+           
+          <form:input  class="form-control " type="hidden" path="audit_id" value="${NewPartis.audit_id}" />
+          </div>
+          </div>
+         
+          </div>
+          
+
+    </div>
+ 
+             <input class="btn btn-info"  type="submit"/>
+  
+  
+ 
+  
+  
+  
+    </form:form >
+  
+      </div>
+    </div>
+  </div>	
+   
+   
+   
     
+<div class="modal fade bd-example-modal-sm" id="Checkwindow" tabindex="-1" role="dialog" aria-labelledby="myCheckWindow" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="height:100%">
+    <div class="modal-header">
+        <h5 class="modal-title" id="checkModal"><fmt:message key="label.NewCheckPoint" /></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form:form role="form" action="saveCheck" method="post" modelAttribute="NewCheck">
+      
+      <div class="modal-body">
+      <div class="form-row">
+          
+          <div class="col">
+          <div class="form-group">
+            <label class="control-label"><fmt:message key="label.Question" /></label>
+                <form:textarea required="required" path="QS" class="form-control" placeholder="Describe the Question..." ></form:textarea>
+            
+          <form:input  class="form-control " type="hidden" path="audit_id" value="${NewCheck.audit_id}" />
+          </div>
+          </div>
+         
+          </div>
+          
+
+    </div>
+ 
+             <input class="btn btn-info"  type="submit"/>
+  
+  
+ 
+  
+  
+  
+    </form:form >
+  
+  
+  
+  
+      </div>
+    </div>
+  </div>	
+	
 	
 	
 <div class="modal fade bd-example-modal-lg" id="modalwindow" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content" style="height:100%">
     <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New NCR</h5>
+        <h5 class="modal-title" id="exampleModalLabel"><fmt:message key="label.NewNCR" /></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -388,14 +577,14 @@ $(document).ready(function () {
           
           <div class="col">
           <div class="form-group">
-            <label class="control-label">Department</label>
+            <label class="control-label"><fmt:message key="label.Department" /></label>
             <input  maxlength="100" type="text" class="form-control" placeholder="Department" readonly="true" value="${schedule.SCHEDULE_AUDITAREA_NAME}" />
           <form:input  class="form-control " type="hidden" path="ncr_dept_id" value="${schedule.SCHEDULE_AUDITAREA}" />
           </div>
           </div>
           <div class="col">
           <div class="form-group">
-            <label class="control-label">Date  </label>
+            <label class="control-label"><fmt:message key="label.Date" />  </label>
                         <form:input maxlength="100" type="date" class="form-control" placeholder="Date" path="ncr_date" />
             
           </div>
@@ -404,13 +593,13 @@ $(document).ready(function () {
           <div class="form-row">
           <div class="col">
           <div class="form-group">
-            <label class="control-label">Other Source</label>
+            <label class="control-label"> </label>
             <form:input maxlength="100" type="text" path="ncr_source" required="required" class="form-control" placeholder="this can be used for data analysis" />
           </div>
           </div>
           <div class="col">
           <div class="form-group">
-            <label class="control-label">Procedure ref</label>
+            <label class="control-label"><fmt:message key="label.Procedureref" /></label>
         <form:input maxlength="100" type="text" path="ncr_other" required="required" class="form-control" placeholder="(for audit findings only or if applicable)" />
           </div>
           </div>
@@ -423,13 +612,14 @@ $(document).ready(function () {
   <div class="card">
     <div class="card-header text-white bg-info">
     <a class="text-white" data-toggle="collapse" href="#ExcutiveBody" aria-expanded="false" aria-controls="ExcutiveBody">
-    NONCONFORMANCE
-  </a>1111111
+    <fmt:message key="label.NONCONFORMANCE" />
+  </a>
     </div>
     <div class="card-body" id="ExcutiveBody">
     <form:textarea required="required" path="ncr_desc" class="form-control" placeholder="Describe the nonconfirmity..." ></form:textarea>
    <div class="form-group col-md-6">
-            <label class="control-label">Initiator :</label>
+            <label class="control-label"><fmt:message key="label.Initiator" />
+             :</label>
                 <form:input maxlength="100" path="ncr_initiator" type="text" readonly="true" class="form-control" placeholder="(can be auditor or system admin)" value="${pageContext.request.userPrincipal.name}" />
                           <form:input maxlength="100" type="hidden" path="ncr_schedule_id" required="required" class="form-control" value="${schedule.SCHEDULE_ID}"   />
         
@@ -439,7 +629,14 @@ $(document).ready(function () {
              <form:input class="btn btn-info" path="Operation" type="submit"  value="Save"/>
   
   
+ 
+  
+  
+  
     </form:form >
+  
+  
+  
   
       </div>
     </div>

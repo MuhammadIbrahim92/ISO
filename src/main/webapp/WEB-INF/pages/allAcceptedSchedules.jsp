@@ -3,14 +3,17 @@
    "http://www.w3.org/TR/html4/loose.dtd">
    <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-   <%@page session="true"%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
+    
+    <%@page session="true"%>
+    <% response.setCharacterEncoding("UTF-8");%>
    
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Audits Schedule</title>
+<title><fmt:message key="label.AuditsSchedule" /></title>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
@@ -246,7 +249,7 @@ $(document).ready(function() {
                 <div class="card-body d-sm-flex justify-content-between">
 
                     <h4 class="mb-2 mb-sm-0 pt-1">
-                         <span>Schedule List</span>
+                         <span><fmt:message key="label.ScheduleList" /> </span>
                     </h4>
 
                     <form class="d-flex justify-content-center">
@@ -267,7 +270,7 @@ $(document).ready(function() {
     <input type="file" id="FileUpload1" style="display: none" />
  <p >
     <button class="btn btn-primary"  type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Advanced Search
+        <fmt:message key="label.AdvancedSearch" />
     </button>
 </p>
 <div class="collapse" id="collapseExample">
@@ -275,8 +278,8 @@ $(document).ready(function() {
 <div id="builder" class="query-builder" style="display:-ms-flexbox !important;"   >
   </div>
   <div class="btn-group">
-      <button id="btn-reset" class="btn btn-warning reset" >Reset</button>
-      <button id="btn-get-sql" class="btn btn-primary parse-sql" >Search</button>
+      <button id="btn-reset" class="btn btn-warning reset" ><fmt:message key="label.Reset" /> </button>
+      <button id="btn-get-sql" class="btn btn-primary parse-sql" ><fmt:message key="label.Search" /> </button>
     </div>
     </div>
 </div>
@@ -323,21 +326,21 @@ $(document).ready(function() {
             
 			 <thead>
 			<tr>
-			<th>Department</th>
-			<th>Date</th>
-			<th>Auditor</th>
-			<th>Auditee</th>
-			<th width="100" data-breakpoints="xs sm md lg">State</th>
-			<th>Action</th>
+			<th>        <fmt:message key="label.Department" /></th>
+			<th><fmt:message key="label.Date" /></th>
+			<th><fmt:message key="label.Auditor" /></th>
+			<th><fmt:message key="label.Auditee" /></th>
+			<th width="100" data-breakpoints="xs sm md lg"><fmt:message key="label.State" /></th>
+			<th><fmt:message key="label.Action" /></th>
 			</tr>
 			</thead>
 			<tfoot>
 			<tr>
-			<th>Department</th>
-			<th>Date</th>
-			<th>Auditor</th>
-			<th>Auditee</th>
-			<th>State</th>
+			<th><fmt:message key="label.Department" /></th>
+			<th><fmt:message key="label.Date" /></th>
+			<th><fmt:message key="label.Auditor" /></th>
+			<th><fmt:message key="label.Auditee" /></th>
+			<th><fmt:message key="label.State" /></th>
 			<th></th>
 			</tr>
 			</tfoot>
@@ -350,7 +353,7 @@ $(document).ready(function() {
 					<td>${schedule.SCHEDULE_AUDITOR_ID}</td>
 					<td>${schedule.SCHEDULE_AUDITEE_ID}</td>
 					<td>${schedule.SCHEDULE_STATE}</td>
-					<td><a href="InternalAudit?id=${schedule.SCHEDULE_ID}">Open Report</a>
+					<td><a href="InternalAudit?id=${schedule.SCHEDULE_ID}"><fmt:message key="label.OpenReport" /></a>
 						</td>
 
 				</tr>

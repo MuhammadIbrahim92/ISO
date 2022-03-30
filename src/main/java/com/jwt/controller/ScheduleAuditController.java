@@ -1,6 +1,7 @@
 package com.jwt.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,17 +29,29 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 
+import com.jwt.dao.AuditParticipantsDAO;
 import com.jwt.model.AuditArea;
+import com.jwt.model.AuditCheckpoints;
+import com.jwt.model.AuditParticipants;
 import com.jwt.model.AuditTransaction;
+import com.jwt.model.CheckPointsForm;
+import com.jwt.model.Comment;
 import com.jwt.model.Employee;
 import com.jwt.model.Ncr;
+import com.jwt.model.ParticipantsForm;
 import com.jwt.model.ScheduleAudit;
+import com.jwt.model.Task;
 import com.jwt.model.User;
 import com.jwt.service.AuditAreaServiceImpl;
+import com.jwt.service.AuditCheckPointsServiceImpl;
+import com.jwt.service.AuditParticipantsService;
 import com.jwt.service.AuditTransServiceImpl;
+import com.jwt.service.AuditcheckpointsService;
+import com.jwt.service.CommentService;
 import com.jwt.service.EmployeeService;
 import com.jwt.service.NcrServiceImpl;
 import com.jwt.service.ScheduleAuditServiceImpl;
+import com.jwt.service.TaskService;
 import com.jwt.service.UserServiceImpl;
 
 import org.springframework.stereotype.Service;
@@ -65,12 +78,24 @@ public class ScheduleAuditController {
 	@Autowired
 	private AuditAreaServiceImpl auditAreaService;
 	@Autowired
-	private NcrServiceImpl ncrServiceImpl;
-
+	private NcrServiceImpl ncrServiceImpl;    
 	@Autowired
-	private EmployeeService employeeService;
-
+	private AuditcheckpointsService auditCheckPointsServiceImpl;
+	@Autowired
+	private AuditParticipantsService auditParticipantsService;
+	@Autowired
+	private TaskService taskService;
+	@Autowired
+	private CommentService commentService;
+	@RequestMapping(value = "/addComment", method = RequestMethod.POST)
+	public ModelAndView addComment(@ModelAttribute Comment comment,HttpServletRequest request) {
 	
+			
+		if (comment.getID() == 0) { 
+			commentService.addComment(comment);
+		}
+		return new ModelAndView("redirect:"+"taskDetail?id="+comment.getTICKET_ID());
+	}
 	@RequestMapping(value = "/InternalAudit")
 	public ModelAndView internalAudit(ModelAndView model,HttpServletRequest request) throws IOException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -82,7 +107,9 @@ public class ScheduleAuditController {
 		model.addObject("listAuditAreas",listAuditAreas );	
 		int scheduleId = Integer.parseInt(request.getParameter("id"));
 		ScheduleAudit schedule = scheduleAuditService.getSchedule(scheduleId);
-		
+		CheckPointsForm frm=new CheckPointsForm();
+		ParticipantsForm PartForm=new ParticipantsForm();
+
 		if(schedule.getSCHEDULE_STATE().equalsIgnoreCase("SUBMITTED")) {
 			AuditTransaction tran= auditTransService.getAuditTransactionBySchedule(scheduleId);
 			model.addObject("trans", tran);
@@ -101,11 +128,26 @@ public class ScheduleAuditController {
 			}
 		model.addObject("trans", tran);
 		}
+		AuditParticipants NewParticipant=new AuditParticipants();
+		NewParticipant.setAudit_id(scheduleId);
+		
+		AuditCheckpoints NewCheck=new AuditCheckpoints();
+		NewCheck.setAudit_id(scheduleId);
+		
+	   List<AuditCheckpoints> checks=auditCheckPointsServiceImpl.getAllAuditCheckPoints(scheduleId);
+	   frm.setLstCheckpoints(checks);
+	   
+	   List<AuditParticipants> Partis=auditParticipantsService.getAllAuditParticipants(scheduleId);
+	   PartForm.setLstParticipants(Partis);
+	   PartForm.setAudit_id(scheduleId);
 	   Ncr nc1=new Ncr();
 	   nc1.setNcr_status("NEW");
 	   model.addObject("NCR", nc1);
 		model.addObject("schedule", schedule);
-	 
+		model.addObject("checkList",frm);
+		model.addObject("NewCheck",NewCheck);
+		model.addObject("Partis",PartForm);
+		model.addObject("NewPartis",NewParticipant);
 //		model.setViewName("AuditPlan");
     	model.setViewName("InternalAudit");
 	//	model.setViewName("NCR");
@@ -160,6 +202,19 @@ public class ScheduleAuditController {
 		}
 				
 		return new ModelAndView("redirect:/allAcceptedSchedules");
+	}
+
+	
+	@RequestMapping(value = "/SaveTask", method = RequestMethod.POST)
+	public ModelAndView SaveTask(@ModelAttribute Task tsk) {
+		System.out.print("save Task");
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		tsk.setTask_status("New");
+		tsk.setCreated_by(username);
+         taskService.addTask(tsk);
+		
+		return new ModelAndView("redirect:/ObjectiveManagerPlanning");
 	}
 
 	
@@ -237,6 +292,41 @@ public class ScheduleAuditController {
 		return new ModelAndView("redirect:/allSchedules");
 	}
 
+	
+	@RequestMapping(value = "/saveCheck", method = RequestMethod.POST)
+	public ModelAndView saveCheck(@ModelAttribute AuditCheckpoints checkPoint) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+        auditCheckPointsServiceImpl.addCheckPoint(checkPoint);
+		
+
+		return new ModelAndView("redirect:/InternalAudit?"+"id="+checkPoint.getAudit_id());
+	}
+	
+	@RequestMapping(value = "/saveParticipant", method = RequestMethod.POST)
+	public ModelAndView SaveParti(@ModelAttribute AuditParticipants auditParticipants) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+        auditParticipantsService.addParticipants(auditParticipants);
+		
+
+		return new ModelAndView("redirect:/InternalAudit?"+"id="+auditParticipants.getAudit_id());
+	}
+	
+	@RequestMapping(value = "/saveallChecks", method = RequestMethod.POST)
+	public ModelAndView saveallChecks(@ModelAttribute CheckPointsForm checkPoint) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		Integer audit=0;
+       for(int i=0;i<checkPoint.getLstCheckpoints().size();i++) {
+    	  // System.out.println("Check Points is " + checkPoint.getLstCheckpoints().get(i).getRESULT());
+    	   auditCheckPointsServiceImpl.addCheckPoint(checkPoint.getLstCheckpoints().get(i)); 
+    	   audit=checkPoint.getLstCheckpoints().get(i).getAudit_id();
+       }
+		
+
+		return new ModelAndView("redirect:/InternalAudit?"+"id="+audit);
+	}
 	
 	
 	@RequestMapping(value = "/saveNCR", method = RequestMethod.POST)
@@ -408,6 +498,59 @@ public class ScheduleAuditController {
 		return model;
 	}
 
+	@RequestMapping(value = "/ObjectiveManagerPlanning", method = RequestMethod.GET)
+	public ModelAndView ObjectiveManagerPlanning(ModelAndView model,SecurityContextHolderAwareRequestWrapper requestWrapper) throws IOException {
+		List<Task> listTask=null;
+		if(requestWrapper.isUserInRole("ROLE_ADMIN")) {
+			listTask = taskService.getAllTask(requestWrapper.getUserPrincipal().getName());
+		}
+	    else {
+			listTask = taskService.getAllTask(requestWrapper.getUserPrincipal().getName());
+
+		}
+		model.addObject("listTask", listTask);
+	     
+		model.setViewName("TaskManager");
+		return model;
+	}
+
+	@RequestMapping(value = "/taskDetail", method = RequestMethod.GET)
+	public ModelAndView editTask(HttpServletRequest request) {
+		Integer taskId = Integer.parseInt(request.getParameter("id"));
+		List<Comment> lstcomm=commentService.getAllCommentByTask(taskId);
+		System.out.println(taskId);
+		Task task = taskService.getTask(taskId);
+		ModelAndView model = new ModelAndView("TaskDetails");
+		
+		model.addObject("Task", task);
+		System.out.println("pir "+task.getTask_piriority());
+		List<User> listUsers = userService.getAllUsers();
+		model.addObject("listUsers",listUsers);
+		model.addObject("lstcomments",lstcomm);
+		Comment c=new Comment();
+		c.setTICKET_ID(taskId);
+		c.setCommented_by(request.getUserPrincipal().getName());
+		model.addObject("NewComment",c);
+		return model;
+	}
+
+	
+	@RequestMapping(value = "/NewTask", method = RequestMethod.GET)
+	public ModelAndView NewTask(HttpServletRequest request) {
+		Task ts=new Task();
+		ModelAndView model = new ModelAndView("TaskDetails");
+		List<User> listUsers = userService.getAllUsers();
+		List<Comment>lstcomm=new ArrayList<Comment>();
+		model.addObject("lstcomments",lstcomm);
+		
+		model.addObject("Task", ts);
+		model.addObject("listUsers",listUsers);
+		Comment c=new Comment();
+		c.setCommented_by(request.getUserPrincipal().getName());
+		model.addObject("NewComment",c);
+		
+		return model;
+	}
 	
 	@RequestMapping(value = "/allNCRS", method = RequestMethod.GET)
 	public ModelAndView allNCRS(ModelAndView model,SecurityContextHolderAwareRequestWrapper requestWrapper) throws IOException {

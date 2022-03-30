@@ -1,6 +1,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
@@ -24,6 +26,7 @@
 		<property name="prefix" value="/WEB-INF/pages/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+
 <bean class="java.net.URI" id="dbUrl">
     <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
 </bean>
@@ -35,6 +38,7 @@
 		<property name="username"  value="#{ @dbUrl.getUserInfo().split(':')[0] }"></property>
 		<property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"></property>
 	</bean>
+
 
 	<!-- Hibernate SessionFactory -->
 	<bean id="sessionFactory"
@@ -72,4 +76,16 @@
 </property>
 </bean>
 	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="messageSource"
+    p:basenames="WEB-INF/i18n/messages" p:fallbackToSystemLocale="false" />
+    <!-- store preferred language configuration in a cookie -->
+<bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver" id="localeResolver" p:cookieName="locale"  />
+
+
+<mvc:interceptors>
+    <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="lang" id="LocaleChangeInterceptor" />
+    
+</mvc:interceptors>
+  
+	
 </beans>

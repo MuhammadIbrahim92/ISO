@@ -1,15 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
    <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+       <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
+    
     <%@page session="true"%>
+    <% response.setCharacterEncoding("UTF-8");%>
+
     <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
     <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Audits Schedule</title>
+<title><fmt:message key="label.AuditsSchedule" /></title>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
@@ -245,7 +249,7 @@ $(document).ready(function() {
                 <div class="card-body d-sm-flex justify-content-between">
 
                     <h4 class="mb-2 mb-sm-0 pt-1">
-                         <span>Schedule List</span>
+                         <span><fmt:message key="label.ScheduleList" /></span>
                     </h4>
 
                     <form class="d-flex justify-content-center">
@@ -274,8 +278,8 @@ $(document).ready(function() {
 <div id="builder" class="query-builder" style="display:-ms-flexbox !important;"   >
   </div>
   <div class="btn-group">
-      <button id="btn-reset" class="btn btn-warning reset" >Reset</button>
-      <button id="btn-get-sql" class="btn btn-primary parse-sql" >Search</button>
+      <button id="btn-reset" class="btn btn-warning reset" ><fmt:message key="label.Reset" />Reset</button>
+      <button id="btn-get-sql" class="btn btn-primary parse-sql" ><fmt:message key="label.Search" />Search</button>
     </div>
     </div>
 </div>
@@ -322,23 +326,23 @@ $(document).ready(function() {
             
 			 <thead>
 			<tr>
-			<th>Serial</th>
-			<th>Department</th>
-			<th>Date</th>
-			<th>Auditor</th>
-			<th>Auditee</th>
-			<th width="100" data-breakpoints="xs sm md lg">State</th>
-			<th>Action</th>
+			<th><fmt:message key="label.Serial" /></th>
+			<th><fmt:message key="label.Department" /></th>
+			<th><fmt:message key="label.Date" /></th>
+			<th><fmt:message key="label.Auditor" /></th>
+			<th><fmt:message key="label.Auditee"/></th>
+			<th width="100" data-breakpoints="xs sm md lg"><fmt:message key="label.State" /></th>
+			<th><fmt:message key="label.Action" /></th>
 			</tr>
 			</thead>
 			<tfoot>
 			<tr>
-			<th>Serial</th>
-			<th>Department</th>
-			<th>Date</th>
-			<th>Auditor</th>
-			<th>Auditee</th>
-			<th>State</th>
+			<th><fmt:message key="label.Serial" /></th>
+			<th><fmt:message key="label.Department" /></th>
+			<th><fmt:message key="label.Date" /></th>
+			<th><fmt:message key="label.Auditor" /></th>
+			<th><fmt:message key="label.Auditee"/></th>
+			<th><fmt:message key="label.State" /></th>
 			<th></th>
 			</tr>
 			</tfoot>
@@ -356,10 +360,10 @@ $(document).ready(function() {
 			
 				<c:choose> 
   <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0  || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'||schedule.SCHEDULE_STATE == 'AUDITOR_ACCEPTED'||schedule.SCHEDULE_STATE == 'AUDITEE_ACCEPTED'}">
-<a href="editSchedule?id=${schedule.SCHEDULE_ID}">Edit</a>
+<a href="editSchedule?id=${schedule.SCHEDULE_ID}"><fmt:message key="label.Edit" /></a>
 						  </c:when>
 						   <c:otherwise>
-						   <a href="InternalAudit?id=${schedule.SCHEDULE_ID}">Open Report</a>
+						   <a href="InternalAudit?id=${schedule.SCHEDULE_ID}"><fmt:message key="label.OpenReport" /></a>
 						   
 						   </c:otherwise>
 						  
@@ -370,7 +374,7 @@ $(document).ready(function() {
 						&nbsp;&nbsp;&nbsp;&nbsp; 
 						<c:choose> 
   <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_ID==0  || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
-<a href="deleteSchedule?id=${schedule.SCHEDULE_ID}">Delete</a>
+<a href="deleteSchedule?id=${schedule.SCHEDULE_ID}"><fmt:message key="label.Delete" /></a>
 						  </c:when>
         </c:choose>
 						
@@ -384,7 +388,7 @@ $(document).ready(function() {
 		   <sec:authorize access="hasRole('ROLE_ADMIN')">
 		
 		<h4>
-			New Schedule Register <a href="newSchedule">here</a>
+			<fmt:message key="label.NewScheduleRegister" /> <a href="newSchedule"><fmt:message key="label.here" /></a>
 		</h4>
 		  </sec:authorize>
 		</div>
