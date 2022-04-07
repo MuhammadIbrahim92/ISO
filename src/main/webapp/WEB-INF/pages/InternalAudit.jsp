@@ -370,6 +370,7 @@ $(document).ready(function () {
     <tr>
       <th scope="col">#</th>
       <th scope="col"><fmt:message key="label.ParticipantName" /></th>
+      <th scope="col"><fmt:message key="label.Depart" /></th>
     </tr>
   </thead>
   <tbody>
@@ -378,6 +379,8 @@ $(document).ready(function () {
       <th scope="row">${status.count}</th>
       <td>${Check.participant_name}
       <input type="hidden" name="lstParticipants[${status.index}].audit_id" value="${Check.audit_id}">
+      </td>
+      <td>${Check.department_name}
       </td>
       
          </tr>
@@ -480,16 +483,37 @@ $(document).ready(function () {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-        <form:form role="form" action="saveParticipant" method="post" modelAttribute="NewPartis">
+        <form:form role="form" action="saveParticipant" method="post" modelAttribute="NewPartis" autocomplete="off">
       
       <div class="modal-body">
       <div class="form-row">
           
           <div class="col">
           <div class="form-group">
-            <label class="control-label"><fmt:message key="label.ParticipantName" /></label>
-                         <form:select  class="form-control " path="participant_name" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME"/> 
+            <label class="control-label"><fmt:message key="label.Depart" /></label>
+      
+       <form:input  class="form-control " path="department_name"  list="Departs" required="true"/> 
            
+           <datalist id="Departs">
+                    <c:forEach var="Departs" items="${listAuditAreas}">
+                        <option value="${Departs.aUDIT_AREA_NAME}"/>
+                    </c:forEach>
+                </datalist>
+      </div>
+      </div>
+      </div>   
+      <div class="form-row">
+          
+          <div class="col">
+          <div class="form-group">
+            <label class="control-label"><fmt:message key="label.ParticipantName" /></label>
+           <form:input  class="form-control " path="participant_name"  list="lstUsers" required="true"/> 
+           <datalist id="lstUsers">
+                    <c:forEach var="lstUser" items="${listUsers}">
+                        <option value="${lstUser.uSER_NAME}"/>
+                    </c:forEach>
+                </datalist>
+                
           <form:input  class="form-control " type="hidden" path="audit_id" value="${NewPartis.audit_id}" />
           </div>
           </div>
