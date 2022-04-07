@@ -325,13 +325,13 @@ $(document).ready(function () {
     <tr>
       <th scope="row">${status.count}</th>
       <td>${Check.QS}</td>
-      <td><select  name="lstCheckpoints[${status.index}].RESULT" value="${Check.RESULT}" class="form-control "  readonly="${schedule.SCHEDULE_STATE == 'SUBMITTED'}"> 
+      <td><select  name="lstCheckpoints[${status.index}].RESULT" value="${Check.RESULT}" class="form-control " <c:if test="${schedule.SCHEDULE_STATE == 'SUBMITTED'}"> readonly </c:if> > 
          <option value=""></option>
           <option value="YES" <c:if test="${Check.RESULT == 'YES'}"> selected </c:if>><fmt:message key="label.YES" /></option>
           <option value="NO" <c:if test="${Check.RESULT == 'NO'}"> selected </c:if>><fmt:message key="label.NO" /></option>
       </select>
       </td>
-      <td> <textarea  name="lstCheckpoints[${status.index}].NOTES" value="${Check.NOTES}" class="form-control" placeholder="Notes" 
+      <td> <textarea  name="lstCheckpoints[${status.index}].NOTES" <c:if test="${schedule.SCHEDULE_STATE == 'SUBMITTED'}"> readonly </c:if>  value="${Check.NOTES}" class="form-control" placeholder="Notes" 
     >${Check.NOTES}</textarea>
           
           <input type="hidden" name="lstCheckpoints[${status.index}].id" value="${Check.id}">
