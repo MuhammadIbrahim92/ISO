@@ -331,7 +331,7 @@ $(document).ready(function () {
           <option value="NO" <c:if test="${Check.RESULT == 'NO'}"> selected </c:if>><fmt:message key="label.NO" /></option>
       </select>
       </td>
-      <td> <textarea  name="lstCheckpoints[${status.index}].NOTES" readonly="${schedule.SCHEDULE_STATE == 'SUBMITTED'}" required="required" value="${Check.NOTES}" class="form-control" placeholder="Notes" 
+      <td> <textarea  name="lstCheckpoints[${status.index}].NOTES" value="${Check.NOTES}" class="form-control" placeholder="Notes" 
     >${Check.NOTES}</textarea>
           
           <input type="hidden" name="lstCheckpoints[${status.index}].id" value="${Check.id}">
