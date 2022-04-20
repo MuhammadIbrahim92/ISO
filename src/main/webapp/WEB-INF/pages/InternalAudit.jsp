@@ -187,7 +187,7 @@ $(document).ready(function () {
 			<td style="width:344px">${schedule.SCHEDULE_DATE}</td>
 		</tr>
 		<tr>
-			<td style="background-color:#ffcc99; width:144px"><fmt:message key="label.Process Name" /></td>
+			<td style="background-color:#ffcc99; width:144px"><fmt:message key="label.ProcessName" /></td>
 			<td style="width:344px">&nbsp; <fmt:message key="label.InternalAudit" /></td>
 		</tr>
 		<tr>
