@@ -293,18 +293,21 @@ nav.side-navbar.shrinked .sidebar-header .title {
           <span class="heading">Main</span>
            <ul class="list-unstyled">
                     <li id="Dashboardli"><a href="Dashboard"> <i class="fa fa-area-chart"></i><fmt:message key="label.Dashboard" /></a></li>
+                      <sec:authorize access="hasRole('ROLE_ADMIN')">
+					<li id="Userli"><a href="allUsers"> <i class="fa fa-user"></i><fmt:message key="label.userManagement" /></a></li>
+					</sec:authorize>
 					<li id="ObjectiveManagerli"><a href="#ObjectiveDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-line-chart" aria-hidden="true"></i><fmt:message key="label.ObjectiveManager" /></a>
                       <ul id="ObjectiveDropdown" class="collapse list-unstyled ">
                         <li><li ><a href="ObjectiveManagerPlanning"><i class="fa fa-tasks"></i><fmt:message key="label.Planning" /></a></li>
                         <li><a href="#"><i class="fa fa-bar-chart"></i><fmt:message key="label.Reports" /></a></li>
                       </ul>
                     </li>
-					<li><a href="#ActionDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list"></i><fmt:message key="label.ActionManager" /></a>
+					<!--  <li><a href="#ActionDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list"></i><fmt:message key="label.ActionManager" /></a>
                       <ul id="ActionDropdown" class="collapse list-unstyled ">
                         <li><a href="AuditPlan"><i class="fa fa-tasks"></i><fmt:message key="label.Planning" /></a></li>
                         <li><a href="#"><i class="fa fa-bar-chart"></i><fmt:message key="label.Reports" /></a></li>
                       </ul>
-                    </li>
+                    </li>-->
 					<li><a href="#InternalDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-clipboard"></i></i><fmt:message key="label.InternalAudit" /></a>
                       <ul id="InternalDropdown" class="collapse list-unstyled ">
                         <li id="AuditAdminli"><a href="allSchedules"><i class="fa fa-tasks"></i><fmt:message key="label.Planning" /></a></li>

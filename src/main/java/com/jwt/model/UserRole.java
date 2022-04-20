@@ -22,6 +22,27 @@ public class UserRole implements Serializable{
 	
 	@Column
 	private int user_id;
+	
+	@Column
+	private String user_name;
+	@Column
+	private String role_name;
+
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+
+	public String getRole_name() {
+		return role_name;
+	}
+
+	public void setRole_name(String role_name) {
+		this.role_name = role_name;
+	}
 
 	public Integer getId() {
 		return id;

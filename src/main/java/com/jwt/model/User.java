@@ -37,7 +37,16 @@ public class User implements Serializable{
 	@Column
 	private String uSER_ACTIVE;
 
+	@Column
+	private String uSER_TYPE;
 
+	public String getuSER_TYPE() {
+		return uSER_TYPE;
+	}
+
+	public void setuSER_TYPE(String uSER_TYPE) {
+		this.uSER_TYPE = uSER_TYPE;
+	}
 
 	public Integer getuSER_ID() {
 		return uSER_ID;

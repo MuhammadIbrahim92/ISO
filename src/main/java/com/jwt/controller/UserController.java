@@ -15,8 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.jwt.model.Employee;
 import com.jwt.model.ScheduleAudit;
 import com.jwt.model.User;
+import com.jwt.model.UserRole;
 import com.jwt.service.EmployeeService;
+import com.jwt.service.RoleServiceImpl;
 import com.jwt.service.ScheduleAuditServiceImpl;
+import com.jwt.service.UserRoleServiceImpl;
 import com.jwt.service.UserServiceImpl;
 
 @Controller
@@ -31,41 +34,72 @@ public class UserController {
 
 	@Autowired
 	private UserServiceImpl userService;
+	@Autowired
+	private UserRoleServiceImpl roleService;
 
 	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
 	public ModelAndView newUser(ModelAndView model) {
-		// get all users by model and it's Dao , then model.add object w a7oot el all users ,,
-		// ta2dar t add aktr mn object 3la nafs elmodel
+	
 		User user = new User();
+		user.setuSER_ACTIVE("1");
+		user.setuSER_ID(0);
 		model.addObject("user", user);
-		model.setViewName("AuditPlan");
+		model.setViewName("UserDetails");
 		return model;
 	}
 
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute User user) {
+		System.out.println(user);
 		if (user.getuSER_ID() == 0) { // if employee id is 0 then creating the
-			// employee other updating the employee
-			userService.addUser(user);
+			Integer tmp=userService.addUser(user);
+			UserRole role=new UserRole();
+			if(user.getuSER_TYPE().equals("Admin")) {
+				role.setRole_id(2);
+				role.setRole_name("ROLE_ADMIN");
+				role.setUser_name(user.getuSER_NAME());
+				role.setUser_id(tmp);
+			}
+			else {
+				role.setRole_id(1);
+				role.setRole_name("APP_USER");
+				role.setUser_name(user.getuSER_NAME());
+				role.setUser_id(tmp);
+			}
+			roleService.addUserRole(role);
 		} else {
 			userService.updateUser(user);
+			UserRole tmprole=roleService.getAllUserRolesByUser(user.getuSER_ID()).get(0);
+			
+			if(user.getuSER_TYPE().equals("Admin")) {
+				tmprole.setRole_id(2);
+				tmprole.setRole_name("ROLE_ADMIN");
+				
+			}
+			else {
+				tmprole.setRole_id(1);
+				tmprole.setRole_name("APP_USER");
+			}
+			
+		   roleService.updateUserRole(tmprole);
 		}
-		return new ModelAndView("redirect:/");
+		
+		return new ModelAndView("redirect:/allUsers");
 	}
 
 	@RequestMapping(value = "/deleteUser", method = RequestMethod.GET)
 	public ModelAndView deleteUSer(HttpServletRequest request) {
 		int userId = Integer.parseInt(request.getParameter("id"));
 		userService.deleteUser(userId);
-		return new ModelAndView("redirect:/");
+		return new ModelAndView("redirect:/allUsers");
 	}
 
 	@RequestMapping(value = "/editUser", method = RequestMethod.GET)
 	public ModelAndView editUser(HttpServletRequest request) {
 		int userId = Integer.parseInt(request.getParameter("id"));
 		User user = userService.getUser(userId);
-		ModelAndView model = new ModelAndView("AuditPlan");
-		model.addObject("schedule", user);
+		ModelAndView model = new ModelAndView("UserDetails");
+		model.addObject("user", user);
 
 		return model;
 	}
@@ -75,7 +109,7 @@ public class UserController {
 		System.out.println("SIZeeeee : "+listUsers.size());
 		model.addObject("listUsers", listUsers);
 		// MAGED: create new page for all schedules like home page 
-		model.setViewName("allSchedules");
+		model.setViewName("UserManager");
 		return model;
 	}
 

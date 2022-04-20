@@ -207,6 +207,31 @@ $(document).ready(function () {
 
 <table border="1" cellpadding="1" cellspacing="1" style="width:700px; border-collapse: collapse;">
 	<tbody>
+	<tr>
+			<td style="background-color:#ffcc99; width:700px"><strong>participants</strong></td>
+		</tr>
+		<tr>
+			<td style="width:700px"><br />
+			<table border="1" cellpadding="1" cellspacing="1" style="width:700px; border-collapse: collapse;">
+			<thead>
+             <tr style="width:300px;">
+             <th ><strong>Name</strong></th>
+             <th><strong>Department</strong></th>
+             </tr>
+            </thead>
+			<tbody>
+			  <c:forEach var="Check" items="${Partis.lstParticipants}" varStatus="status">
+			  <tr >
+             <td>${Check.participant_name}</td>
+             <td>${Check.department_name}</td>
+             </tr>
+			  </c:forEach>
+			 
+		    <tbody>
+			</table>
+			&nbsp;</td>
+		</tr>
+	
 		<tr>
 			<td style="background-color:#ffcc99; width:700px"><strong>Executive Summary</strong></td>
 		</tr>
@@ -230,6 +255,32 @@ $(document).ready(function () {
 			
 			${trans.trans_reviewed_records}</td>
 		</tr>
+		<tr>
+			<td style="background-color:#ffcc99; width:700px"><strong>Audit CheckList</strong></td>
+		</tr>
+		<tr>
+			<td style="width:700px"><br />
+			<table border="1" cellpadding="1" cellspacing="1" style="width:700px; border-collapse: collapse;">
+			<thead>
+             <tr style="width:300px;">
+             <th ><strong>Checkpoint</strong></th>
+             <th><strong>Result</strong></th>
+             </tr>
+            </thead>
+			<tbody>
+			  <c:forEach var="Check" items="${checkList.lstCheckpoints}" varStatus="status">
+			  <tr >
+             <td>${Check.QS}</td>
+             <td>${Check.RESULT}</td>
+             </tr>
+			  </c:forEach>
+			 
+		    <tbody>
+			</table>
+			&nbsp;</td>
+		</tr>
+	
+		
 	</tbody>
 </table>
 
@@ -594,7 +645,7 @@ $(document).ready(function () {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-        <form:form role="form" action="saveNCR" method="post" modelAttribute="NCR">
+        <form:form role="form" action="saveNCRSchedule" method="post" modelAttribute="NCR">
       
       <div class="modal-body">
        <div class="form-row">
@@ -617,7 +668,7 @@ $(document).ready(function () {
           <div class="form-row">
           <div class="col">
           <div class="form-group">
-            <label class="control-label"> </label>
+            <label class="control-label"><fmt:message key="label.ncr_source" /> </label>
             <form:input maxlength="100" type="text" path="ncr_source" required="required" class="form-control" placeholder="this can be used for data analysis" />
           </div>
           </div>
@@ -645,6 +696,10 @@ $(document).ready(function () {
             <label class="control-label"><fmt:message key="label.Initiator" />
              :</label>
                 <form:input maxlength="100" path="ncr_initiator" type="text" readonly="true" class="form-control" placeholder="(can be auditor or system admin)" value="${pageContext.request.userPrincipal.name}" />
+                <label class="control-label"><fmt:message key="label.Auditee" />
+             :</label>
+                <form:input maxlength="100" path="ncr_assigned_to" type="text" readonly="true" class="form-control" placeholder="(can be auditor or system admin)" value="${schedule.SCHEDULE_AUDITEE_ID}" />
+                 
                           <form:input maxlength="100" type="hidden" path="ncr_schedule_id" required="required" class="form-control" value="${schedule.SCHEDULE_ID}"   />
         
           </div>

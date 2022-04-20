@@ -44,7 +44,30 @@ public class ScheduleAudit implements Serializable{
 	
 	@Column
 	private String SCHEDULE_STATE;
+
+	@Column
+	private String AUDITOR_REJECT_REASON;
+
+	@Column
+	private String AUDITEE_REJECT_REASON;
+
 	
+	public String getAUDITOR_REJECT_REASON() {
+		return AUDITOR_REJECT_REASON;
+	}
+
+	public void setAUDITOR_REJECT_REASON(String aUDITOR_REJECT_REASON) {
+		AUDITOR_REJECT_REASON = aUDITOR_REJECT_REASON;
+	}
+
+	public String getAUDITEE_REJECT_REASON() {
+		return AUDITEE_REJECT_REASON;
+	}
+
+	public void setAUDITEE_REJECT_REASON(String aUDITEE_REJECT_REASON) {
+		AUDITEE_REJECT_REASON = aUDITEE_REJECT_REASON;
+	}
+
 	@Column(updatable=false, insertable=false)
     @Formula("(Select la.audit_area_name from audit_area la Where la.audit_area_id=SCHEDULE_AUDITAREA)")
 	private String SCHEDULE_AUDITAREA_NAME;

@@ -33,6 +33,11 @@ public class UserRoleServiceImpl {
 	public List<UserRole> getAllUserRoles() {
 		return userRoleDAO.getAllUserRoles();
 	}
+	
+	@Transactional
+	public List<UserRole> getAllUserRolesByUser(Integer UserId) {
+		return userRoleDAO.getAllUserRoleByUserID(UserId);
+	}
 
 	
 	@Transactional

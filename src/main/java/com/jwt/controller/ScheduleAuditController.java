@@ -346,6 +346,10 @@ public class ScheduleAuditController {
                 	schedule.setNcr_status("Under Revision");
                 	ncrServiceImpl.addNcr(schedule);
                 }
+                else if(schedule.getOperation().equalsIgnoreCase("Return To Auditee")) {
+                	schedule.setNcr_status("Under Investigation");
+                	ncrServiceImpl.addNcr(schedule);
+                }
                 else {
                 	schedule.setNcr_status("CLOSED");
                     	ncrServiceImpl.addNcr(schedule);
@@ -357,6 +361,37 @@ public class ScheduleAuditController {
 	        
 
 		return new ModelAndView("redirect:/allNCRS");
+	}
+
+	
+	@RequestMapping(value = "/saveNCRSchedule", method = RequestMethod.POST)
+	public ModelAndView saveNCR2(@ModelAttribute Ncr schedule) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+         System.out.println("Op is" +schedule.getOperation());
+		if (schedule.getID()==null|| schedule.getID() == 0) { // if employee id is 0 then creating the
+			schedule.setNcr_status("Under Investigation");
+			 ncrServiceImpl.addNcr(schedule);
+			//scheduleAuditService.addSchedule(ncr);
+		} else  {
+                if(schedule.getOperation().equalsIgnoreCase("SAVE")) {
+                	ncrServiceImpl.addNcr(schedule);
+                }
+                else if(schedule.getOperation().equalsIgnoreCase("SOLVED")) {
+                	schedule.setNcr_status("Under Revision");
+                	ncrServiceImpl.addNcr(schedule);
+                }
+                else {
+                	schedule.setNcr_status("CLOSED");
+                    	ncrServiceImpl.addNcr(schedule);
+                    
+                }
+			//scheduleAuditService.updateSchedule(ncr);
+		}
+	
+	       
+
+		return new ModelAndView("redirect:/InternalAudit?id="+ schedule.getNcr_schedule_id());
 	}
 
 	
@@ -393,8 +428,10 @@ public class ScheduleAuditController {
 	@RequestMapping(value = "/RejectAuditor", method = RequestMethod.GET)
 	public ModelAndView RejectScheduleAuditor(HttpServletRequest request) {
 		int scheduleId = Integer.parseInt(request.getParameter("id"));
+		String rejectionReason =request.getParameter("reject_reason");
 		ScheduleAudit schedule = scheduleAuditService.getSchedule(scheduleId);
 	    schedule.setSCHEDULE_STATE("AUDITOR_REJECT");
+	    schedule.setAUDITOR_REJECT_REASON(rejectionReason);
 		scheduleAuditService.updateSchedule(schedule);
 		return new ModelAndView("redirect:/allSchedules");
 	}
@@ -410,8 +447,12 @@ public class ScheduleAuditController {
 	@RequestMapping(value = "/RejectAuditee", method = RequestMethod.GET)
 	public ModelAndView RejectScheduleAuditee(HttpServletRequest request) {
 		int scheduleId = Integer.parseInt(request.getParameter("id"));
+		String rejectionReason =request.getParameter("reject_reason");
+
 		ScheduleAudit schedule = scheduleAuditService.getSchedule(scheduleId);
 	    schedule.setSCHEDULE_STATE("AUDITEE_REJECTED");
+	    schedule.setAUDITEE_REJECT_REASON(rejectionReason);
+
 		scheduleAuditService.updateSchedule(schedule);
 		return new ModelAndView("redirect:/allSchedules");
 	}

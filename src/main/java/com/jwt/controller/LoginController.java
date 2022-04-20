@@ -1,9 +1,11 @@
 package com.jwt.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,18 +16,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jwt.model.DashboardCountPerDept;
 import com.jwt.model.Employee;
+import com.jwt.service.DashboardService;
+import com.jwt.service.DashboardServiceImpl;
+import com.jwt.service.UserServiceImpl;
 
 @Controller
 public class LoginController {
 	private static final Logger logger = Logger
 			.getLogger(LoginController.class);
+	@Autowired
+	public DashboardService dashService;
 	@RequestMapping(value = "/")
 	public ModelAndView login(ModelAndView model) throws IOException {
 		
 		model.setViewName("Login");
 		return model;
 	}
+	@Autowired
+	private UserServiceImpl userService;
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout) {
@@ -52,8 +62,49 @@ public class LoginController {
 	}
 	@RequestMapping(value = "/Dashboard")
 	public ModelAndView Dashboard(ModelAndView model) throws IOException {
+        List<DashboardCountPerDept> pendingperDept=dashService.getallPending();
+        List<DashboardCountPerDept> CompletedperDept=dashService.getallCompleted();
+        List<DashboardCountPerDept> auditsPerStatus=dashService.getAuditsPerStatus();
+        
+        List<Long> pendingperDeptcounts=new ArrayList<Long>();
+        List<String> pendingperDeptLabel=new ArrayList<String>();
+        
+        for(int i=0;i<pendingperDept.size();i++) {
+        	pendingperDeptcounts.add(pendingperDept.get(i).getCounts());
+        	pendingperDeptLabel.add("'"+pendingperDept.get(i).getName()+"'");
+        }
+        model.addObject("PendingDeptcounts",pendingperDeptcounts);
+        model.addObject("pendingperDeptLabel",pendingperDeptLabel);
+
+        List<Long> CompletedperDeptcounts=new ArrayList<Long>();
+        List<String> CompletedperDeptLabel=new ArrayList<String>();
+        
+        for(int i=0;i<CompletedperDept.size();i++) {
+        	CompletedperDeptcounts.add(CompletedperDept.get(i).getCounts());
+        	CompletedperDeptLabel.add("'"+CompletedperDept.get(i).getName()+"'");
+        }
+        
+        
+        model.addObject("CompletedDeptcounts",CompletedperDeptcounts);
+        model.addObject("CompletedDeptLabel",CompletedperDeptLabel);
+        
 		
-		model.setViewName("Dashboard");
+        List<Long> auditsperStatuscount=new ArrayList<Long>();
+        List<String> auditsperStatuslabel=new ArrayList<String>();
+        
+        for(int i=0;i<auditsPerStatus.size();i++) {
+        	auditsperStatuscount.add(auditsPerStatus.get(i).getCounts());
+        	auditsperStatuslabel.add("'"+auditsPerStatus.get(i).getName()+"'");
+        }
+        
+        
+        model.addObject("auditsperStatuscount",auditsperStatuscount);
+        model.addObject("auditsperStatuslabel",auditsperStatuslabel);
+        
+        
+        
+        model.setViewName("Dashboard");
+		
 		return model;
 	}
 

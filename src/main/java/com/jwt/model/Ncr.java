@@ -51,6 +51,18 @@ public class Ncr implements Serializable{
 	private String ncr_initiator;
 	
 	@Column
+	private String ncr_assigned_to;
+	
+	
+	public String getNcr_assigned_to() {
+		return ncr_assigned_to;
+	}
+
+	public void setNcr_assigned_to(String ncr_assigned_to) {
+		this.ncr_assigned_to = ncr_assigned_to;
+	}
+
+	@Column
 	private String ncr_root_cause;
 	
 	@Column

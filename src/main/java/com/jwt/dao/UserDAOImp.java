@@ -16,8 +16,8 @@ public class UserDAOImp {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public void addUser(User user) {
-		sessionFactory.getCurrentSession().saveOrUpdate(user);
+	public Integer addUser(User user) {
+		return (Integer) sessionFactory.getCurrentSession().save(user);
 
 	}
 

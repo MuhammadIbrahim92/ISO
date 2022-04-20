@@ -22,8 +22,8 @@ public class UserServiceImpl {
 
 
 	@Transactional
-	public void addUser(User user) {
-		userDAO.addUser(user);
+	public Integer addUser(User user) {
+		return userDAO.addUser(user);
 	}
 
 	

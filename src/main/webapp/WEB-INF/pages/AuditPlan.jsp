@@ -263,12 +263,43 @@ $(document).ready(function () {
   
    </sec:authorize>
   
+  
  
           </div>
+  
+  <sec:authorize access="hasRole('ROLE_ADMIN')">
+     <c:choose>
+             <c:when test="${schedule.SCHEDULE_STATE == 'AUDITOR_REJECT'}">
+<div class="form-group">
+            <label class="control-label"><fmt:message key="label.AuditorRejection" /></label>
+               
+            <form:textarea  type="text" path="AUDITOR_REJECT_REASON" required="required" class="form-control"  readonly="true" ></form:textarea>
+          </div>
+          
+            </c:when>
+            </c:choose>
+   
+   </sec:authorize>
+   
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
+     <c:choose>
+             <c:when test="${schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED'}">
+<div class="form-group">
+            <label class="control-label"><fmt:message key="label.AuditeeRejection" /></label>
+               
+            <form:textarea  type="text" path="AUDITEE_REJECT_REASON" required="required" class="form-control"  readonly="true" ></form:textarea>
+          </div>
+          
+            </c:when>
+            </c:choose>
+   
+   </sec:authorize>
+ 
+   
            <sec:authorize access="hasRole('ROLE_ADMIN')">
            <c:choose>
              <c:when test="${schedule.SCHEDULE_STATE == 'NEW' || schedule.SCHEDULE_STATE == 'AUDITOR_REJECT' ||schedule.SCHEDULE_STATE == 'AUDITEE_REJECTED' || schedule.SCHEDULE_ID==0 }">
-          <button class="btn btn-primary" type="submit" >Initiate Schedule</button>
+          <button class="btn btn-primary" type="submit" >Save Schedule</button>
             </c:when>
             </c:choose>
           
@@ -276,13 +307,19 @@ $(document).ready(function () {
           <c:choose>
          <c:when test="${schedule.SCHEDULE_STATE == 'NEW' && schedule.SCHEDULE_AUDITOR_ID==pageContext.request.userPrincipal.name }">
           <a class="btn btn-success" href="AcceptAuditor?id=${schedule.SCHEDULE_ID}" ><fmt:message key="label.AcceptSchedule" /></a>
-           <a class="btn btn-danger" href="RejectAuditor?id=${schedule.SCHEDULE_ID}" ><fmt:message key="label.RejectSchedule" /></a>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+              <fmt:message key="label.RejectSchedule" />
+              </button>
           </c:when>
          </c:choose>
    <c:choose>
          <c:when test="${schedule.SCHEDULE_STATE == 'AUDITOR_ACCEPTED' && schedule.SCHEDULE_AUDITEE_ID==pageContext.request.userPrincipal.name }">
           <a class="btn btn-success" href="AcceptAuditee?id=${schedule.SCHEDULE_ID}" ><fmt:message key="label.AcceptSchedule" /></a>
-           <a class="btn btn-danger" href="RejectAuditee?id=${schedule.SCHEDULE_ID}" ><fmt:message key="label.RejectSchedule" /></a>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal1">
+              <fmt:message key="label.RejectSchedule" />
+              </button>
+                    
+          
           </c:when>
          </c:choose>
         </div>
@@ -290,6 +327,66 @@ $(document).ready(function () {
     
     
   </form:form>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enter Rejection Reason</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+  <form action="RejectAuditor" method="get" >
+          
+           <div class="form-group">
+            <label for="message-text" class="col-form-label">Reason:</label>
+            <textarea class="form-control" name="reject_reason" required="true"></textarea>
+          </div>
+
+        <input type="hidden" value="${schedule.SCHEDULE_ID}" name="id" id="id"/>
+                   <button class="btn btn-danger" type="submit"><fmt:message key="label.RejectSchedule" /></button>
+        
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enter Rejection Reason</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+  <form action="RejectAuditee" method="get" >
+          
+           <div class="form-group">
+            <label for="message-text" class="col-form-label">Reason:</label>
+            <textarea class="form-control" name="reject_reason" required="true"></textarea>
+          </div>
+
+        <input type="hidden" value="${schedule.SCHEDULE_ID}" name="id" id="id"/>
+                   <button class="btn btn-danger" type="submit"><fmt:message key="label.RejectSchedule" /></button>
+        
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </div>
 	

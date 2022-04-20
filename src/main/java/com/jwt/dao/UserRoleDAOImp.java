@@ -32,6 +32,17 @@ public class UserRoleDAOImp {
 				
 	  
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserRole> getAllUserRoleByUserID(Integer UserId) {
+		
+		List<UserRole> allUserRoles = sessionFactory.getCurrentSession().createQuery("from UserRole where user_id="+UserId).list();
+		System.out.println("***** "+ allUserRoles.size());
+		
+		return allUserRoles;
+				
+	  
+	}
 
 	
 	public void deleteUserRole(Integer userRoleId) {
