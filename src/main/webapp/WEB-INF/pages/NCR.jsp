@@ -347,10 +347,10 @@ $(document).ready(function () {
 			  <c:choose> 
   <c:when test="${schedule.ncr_status != 'NEW'}">
             
-             <form:select  class="form-control " path="ncr_assigned_to" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME"/> 
+             <form:select  class="form-control " path="ncr_assigned_to" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME" readonly="readonly"/> 
   </c:when>
   <c:otherwise>
-               <form:select  class="form-control " path="ncr_assigned_to" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME" readonly="readonly"/> 
+               <form:select  class="form-control " path="ncr_assigned_to" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME" /> 
   
   </c:otherwise>
 </c:choose>
