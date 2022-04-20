@@ -1,7 +1,7 @@
 <bean class="java.net.URI" id="dbUrl">
     <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
 </bean>
-	<!-- DataSource -->
+	<!-- DataSource     -->
 	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		id="dataSource">
 		<property name="driverClassName" value="${database.driver}"></property>

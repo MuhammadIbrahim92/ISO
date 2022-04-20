@@ -289,8 +289,18 @@ $(document).ready(function () {
           <div class="col">
           <div class="form-group">
             <label class="control-label">Department</label>
-          <form:select  class="form-control " path="ncr_dept_id" items="${listAuditAreas}" readonly="${schedule.ncr_status != 'NEW'}" itemValue="audit_area_id" itemLabel="aUDIT_AREA_NAME" />
-          </div>
+			<c:choose>
+			   <c:when test="${schedule.ncr_status != 'NEW'}">
+          <form:select  class="form-control " path="ncr_dept_id" items="${listAuditAreas}" readonly="true" itemValue="audit_area_id" itemLabel="aUDIT_AREA_NAME" />
+          </c:when>
+            </c:choose>
+			<c:choose>
+			   <c:when test="${schedule.ncr_status == 'NEW'}">
+          <form:select  class="form-control " path="ncr_dept_id" items="${listAuditAreas}" itemValue="audit_area_id" itemLabel="aUDIT_AREA_NAME" />
+          </c:when>
+            </c:choose>
+			
+		 </div>
           </div>
           <div class="col">
           <div class="form-group">
@@ -334,7 +344,16 @@ $(document).ready(function () {
     </div>
      <div class="form-group col-md-6">
             <label class="control-label">Auditee :</label>
-        <form:input maxlength="100" path="ncr_assigned_to" type="text" readonly="true" class="form-control" placeholder="(can be auditor or system admin)" />
+			  <c:choose> 
+  <c:when test="${schedule.ncr_status != 'NEW'}">
+            
+             <form:select  class="form-control " path="ncr_assigned_to" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME"/> 
+  </c:when>
+  <c:otherwise>
+               <form:select  class="form-control " path="ncr_assigned_to" items="${listUsers}" itemValue="uSER_NAME" itemLabel="uSER_NAME" readonly="readonly"/> 
+  
+  </c:otherwise>
+</c:choose>
           </div>
     </div>
   </div>
