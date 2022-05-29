@@ -30,7 +30,7 @@
 <bean class="java.net.URI" id="dbUrl">
     <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
 </bean>
-	<!-- DataSource -->
+	<!-- DataSource     -->
 	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		id="dataSource">
 		<property name="driverClassName" value="${database.driver}"></property>
@@ -38,6 +38,7 @@
 		<property name="username"  value="#{ @dbUrl.getUserInfo().split(':')[0] }"></property>
 		<property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"></property>
 	</bean>
+
 
 
 	<!-- Hibernate SessionFactory -->

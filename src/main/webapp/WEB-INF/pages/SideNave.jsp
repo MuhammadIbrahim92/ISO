@@ -296,6 +296,10 @@ nav.side-navbar.shrinked .sidebar-header .title {
                       <sec:authorize access="hasRole('ROLE_ADMIN')">
 					<li id="Userli"><a href="allUsers"> <i class="fa fa-user"></i><fmt:message key="label.userManagement" /></a></li>
 					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<li id="FileLi"><a href="filemanager"> <i class="fa fa-file"></i><fmt:message key="label.fileManagement" /></a></li>
+					</sec:authorize>
+		
 					<li id="ObjectiveManagerli"><a href="#ObjectiveDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-line-chart" aria-hidden="true"></i><fmt:message key="label.ObjectiveManager" /></a>
                       <ul id="ObjectiveDropdown" class="collapse list-unstyled ">
                         <li><li ><a href="ObjectiveManagerPlanning"><i class="fa fa-tasks"></i><fmt:message key="label.Planning" /></a></li>

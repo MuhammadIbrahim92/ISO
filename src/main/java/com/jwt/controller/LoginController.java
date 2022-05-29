@@ -108,6 +108,23 @@ public class LoginController {
 		return model;
 	}
 
+	@RequestMapping(value = "/filemanager")
+	public ModelAndView FileManager(ModelAndView model) throws IOException {
+       
+        
+        model.setViewName("FileManagerAll");
+		
+		return model;
+	}
+	@RequestMapping(value = "/meetings")
+	public ModelAndView meetings(ModelAndView model) throws IOException {
+       
+        
+        model.setViewName("Meetings");
+		
+		return model;
+	}
+	
 	@RequestMapping(value = "/Reporting")
 	public ModelAndView Reporting(ModelAndView model) throws IOException {
 		model.addObject("srcValue", "http://192.168.0.8:8080/ReportPortal/report.html?Module=8&lang=en");
