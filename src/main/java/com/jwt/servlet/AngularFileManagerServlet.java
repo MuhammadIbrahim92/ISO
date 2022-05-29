@@ -359,8 +359,6 @@ public class AngularFileManagerServlet extends HttpServlet {
         try {
             boolean onlyFolders = false;//"true".equalsIgnoreCase(params.getString("onlyFolders"));
             String path = params.getString("path");
-            //LOG.debug("list path: Paths.get('{}', '{}'), onlyFolders: {}", REPOSITORY_BASE_PATH, path, onlyFolders);
-
             List<JSONObject> resultList = new ArrayList<>();
             try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(REPOSITORY_BASE_PATH, path))) {
                 SimpleDateFormat dt = new SimpleDateFormat(DATE_FORMAT);
@@ -423,8 +421,6 @@ public class AngularFileManagerServlet extends HttpServlet {
         try {
             String path = params.getString("item");
             String newpath = params.getString("newItemPath");
-            //LOG.debug("rename from: {} to: {}", path, newpath);
-
             File srcFile = new File(REPOSITORY_BASE_PATH, path);
             File destFile = new File(REPOSITORY_BASE_PATH, newpath);
             if (srcFile.isFile()) {
