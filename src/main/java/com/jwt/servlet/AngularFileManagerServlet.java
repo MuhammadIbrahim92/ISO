@@ -57,55 +57,6 @@ import org.json.JSONException;
 //import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 
-
-/**
- * This servlet serve angular-filemanager call<br>
- * It's here for example purpouse, to use it you have to put it in your java web
- * project<br>
- * Put in web.xml the servlet mapping
- *
- * <pre>
- * &ltservlet&gt
- * 	&ltservlet-name&gtFileManagerServlet&lt/servlet-name&gt
- * 	&ltservlet-class&gtcom.project.web.servlet.AngularFileManagerServlet&lt/servlet-class&gt
- * &lt/servlet&gt
- * &ltservlet-mapping&gt
- * 	&ltservlet-name&gtFileManagerServlet&lt/servlet-name&gt
- * 	&lturl-pattern&gt/fm/*&lt/url-pattern&gt
- * &lt/servlet-mapping&gt
- * </pre>
- *
- * that catch all request to path /fm/*<br>
- * in angular-filemanager-master/index.html uncomment links to js files<br>
- * in my assest/config.js I have :
- *
- * <pre>
- * listUrl : "/fm/listUrl",
- * uploadUrl : "/fm/uploadUrl",
- * renameUrl : "/fm/renameUrl",
- * copyUrl : "/fm/copyUrl",
- * removeUrl : "/fm/removeUrl",
- * editUrl : "/fm/editUrl",
- * getContentUrl : "/fm/getContentUrl",
- * createFolderUrl : "/fm/createFolderUrl",
- * downloadFileUrl : "/fm/downloadFileUrl",
- * compressUrl : "/fm/compressUrl",
- * extractUrl : "/fm/extractUrl",
- * permissionsUrl : "/fm/permissionsUrl",
- * </pre>
- *
- * During initialization this servlet load some config properties from a file
- * called angular-filemanager.properties in your classes folder. You can set
- * repository.base.url and date.format <br>
- * Default values are : repository.base.url = "" and date.format = "yyyy-MM-dd
- * hh:mm:ss" (Wed, 4 Jul 2001 12:08:56) <br>
- * <br>
- * <b>NOTE:</b><br>
- * Does NOT manage 'preview' parameter in download<br>
- * Compress and expand are NOT implemented<br>
- *
- * @author Paolo Biavati https://github.com/paolobiavati
- */
 public class AngularFileManagerServlet extends HttpServlet {
 
 
