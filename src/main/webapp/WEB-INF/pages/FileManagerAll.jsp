@@ -25,6 +25,8 @@
     <script src="resources/node_modules/angular/angular.min.js"></script>
     <script src="resources/node_modules/angular-translate/dist/angular-translate.min.js"></script>
     <script src="resources/node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
+        <script src="resources/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+   
     <link rel="stylesheet" href="resources/node_modules/bootswatch/paper/bootstrap.min.css" />
     <link href="resources/dist/angular-filemanager.min.css" rel="stylesheet">
     <script src="resources/dist/angular-filemanager.min.js"></script>
@@ -74,7 +76,7 @@
     }]);
   </script> 
   </head>
-<body  style="font-size:1.5rem !important;">
+<body class="ng-cloak" style="font-size:1.5rem !important;">
 <jsp:include page="NavBar.jsp">
          <jsp:param name="param1" value="FileLi"/>
      </jsp:include>
